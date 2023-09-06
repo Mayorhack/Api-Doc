@@ -76,7 +76,7 @@ tags:
     description: |
       <SchemaDefinition schemaRef="#/components/schemas/Order" exampleRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} />
 x-tagGroups:
-  - name: General
+  - name: Savings
     tags:
       - pet
       - store

@@ -57,7 +57,7 @@ tags:
   - name: user
     description: Operations about user
 x-tagGroups:
-  - name: General
+  - name: Savings
     tags:
       - pet
       - store

@@ -1787,9 +1787,9 @@ culpa qui officia deserunt mollit anim id est laborum.
   ],
   "x-tagGroups": Array [
     Object {
-      "name": "General",
+      "name": "Savings",
       "tags": Array [
-        "pet",
+        "Topup",
         "store",
       ],
     },
@@ -3824,9 +3824,9 @@ culpa qui officia deserunt mollit anim id est laborum.
   },
   "x-tagGroups": Array [
     Object {
-      "name": "General",
+      "name": "Savings",
       "tags": Array [
-        "pet",
+        "Topup",
         "store",
         "webhooks",
       ],
@@ -5162,9 +5162,9 @@ try {
   ],
   "x-tagGroups": Array [
     Object {
-      "name": "General",
+      "name": "Savings",
       "tags": Array [
-        "pet",
+        "Topup",
         "store",
       ],
     },

@@ -1,1231 +1,5622 @@
-openapi: 3.0.0
-servers:
-  - url: //Rex MFBank.swagger.io/v2
-    description: Default server
-  - url: //Rex MFBank.swagger.io/sandbox
-    description: Sandbox server
+openapi: 3.0.1
 info:
-  description: |
-    This is a sample server Rex MFBank server.
-    You can find out more about Swagger at
-    [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).
-    For this sample, you can use the api key `special-key` to test the authorization filters.
-
-    # Introduction
-    This API is documented in **OpenAPI format** and is based on
-    [Rex MFBank sample](http://Rex MFBank.swagger.io/) provided by [swagger.io](http://swagger.io) team.
-    It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
-    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
-    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/main/docs/redoc-vendor-extensions.md).
-
-    # OpenAPI Specification
-    This API is documented in **OpenAPI format** and is based on
-    [Rex MFBank sample](http://Rex MFBank.swagger.io/) provided by [swagger.io](http://swagger.io) team.
-    It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
-    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
-    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/main/docs/redoc-vendor-extensions.md).
-
-    # Cross-Origin Resource Sharing
-    This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).
-    And that allows cross-domain communication from the browser.
-    All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.
-
-    # Authentication
-
-    Rex MFBank offers two forms of authentication:
-      - API Key
-      - OAuth2
-    OAuth2 - an open protocol to allow secure authorization in a simple
-    and standard method from web, mobile and desktop applications.
-
-    <!-- ReDoc-Inject: <security-definitions> -->
-
-  version: 1.0.0
-  title: Rex MFBank Documentation
-  termsOfService: 'http://swagger.io/terms/'
-  contact:
-    name: API Support
-    email: apiteam@swagger.io
-    url: https://github.com/Redocly/redoc
-  x-logo:
-    url: 'https://anpv3imagehostingprod.s3.eu-west-1.amazonaws.com/66718_rexmfb-login-logo.png'
-    altText: Rex MFBank logo
+  title: RexMfb
+  description: Bass Core Service
+  termsOfService: http://baas.rexmfb.com/terms/
   license:
     name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-externalDocs:
-  description: Find out how to create Github repo for your OpenAPI spec.
-  url: 'https://github.com/Rebilly/generator-openapi-repo'
+    url: http://springdoc.org
+  version: '1.0'
+  x-logo:
+    url: https://baas.rexmfb.com/assets/img/brand/anp-logo.png
+    backgroundColor: '#FFFFFF'
+    altText: ANP logo
+    href: https://baas.rexmfb.com/assets/img/brand/anp-logo.png
+servers:
+  - url: http://baascore-dev.globalaccelerex.com/baas/api/v1
+    description: Generated server url
 tags:
-  - name: pet
-    description: Everything about your Pets
-  - name: store
-    description: Access to Rex MFBank orders
-  - name: user
-    description: Operations about user
-  - name: pet_model
-    x-displayName: The Pet Model
-    description: |
-      <SchemaDefinition schemaRef="#/components/schemas/Pet" />
-  - name: store_model
-    x-displayName: The Order Model
-    description: |
-      <SchemaDefinition schemaRef="#/components/schemas/Order" exampleRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} />
-x-tagGroups:
-  - name: General
-    tags:
-      - pet
-      - store
-  - name: User Management
-    tags:
-      - user
-  - name: Models
-    tags:
-      - pet_model
-      - store_model
-security:
-  - {}
+  - name: 'account '
+    description: creating account for onboarded customer
+  - name: Vendor Management
+    description: Vendor Management
+  - name: 'customer profile '
+    description: handle customer profile crud operation
+  - name: jwt
+    description: JWT Authentication Service
+  - name: transfer
+    description: Transfer Service
+  - name: Document
+    description: Document
+  - name: Gac Aggregator
+    description: Gac Aggregator
+  - name: Email and SMS Messaging Template
+    description: Email and SMS Messaging Template
+  - name: Third party API Key Management
+    description: Third party API Key Management
+  - name: onboarding
+    description: Onboarding Customer Service
+  - name: Maker Checker
+    description: Maker Checker Logs
+  - name: Static Lookup Data Maintenance
+    description: Static Lookup Data Maintenance
+  - name: Ba Access Keys
+    description: Ba Entities
+  - name: fileuploadservice
+    description: File Upload Service
+  - name: System Config Params
+    description: System Config Params
+  - name: Bank Information
+    description: Bank Information
+  - name: usermanager
+    description: User Management Service
 paths:
-  /pet:
-    parameters:
-      - name: Accept-Language
-        in: header
-        description: 'The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US'
-        example: en-US
-        required: false
-        schema:
-          type: string
-          default: en-AU
-      - name: cookieParam
-        in: cookie
-        description: Some cookie
-        required: true
-        schema:
-          type: integer
-          format: int64
-    post:
-      tags:
-        - pet
-      summary: Add a new pet to the store
-      description: Add new pet to the store inventory.
-      operationId: addPet
-      responses:
-        '405':
-          description: Invalid input
-      security:
-        - Rex MFBank_auth:
-            - 'write:pets'
-            - 'read:pets'
-      x-codeSamples:
-        - lang: 'C#'
-          source: |
-            Rex MFBank.v1.Pet pet = new Rex MFBank.v1.Pet();
-            pet.setApiKey("your api key");
-            pet.petType = Rex MFBank.v1.Pet.TYPE_DOG;
-            pet.name = "Rex";
-            // set other fields
-            Rex MFBankResponse response = pet.create();
-            if (response.statusCode == HttpStatusCode.Created)
-            {
-              // Successfully created
-            }
-            else
-            {
-              // Something wrong -- check response for errors
-              Console.WriteLine(response.getRawResponse());
-            }
-        - lang: PHP
-          source: |
-            $form = new \Rex MFBank\Entities\Pet();
-            $form->setPetType("Dog");
-            $form->setName("Rex");
-            // set other fields
-            try {
-                $pet = $client->pets()->create($form);
-            } catch (UnprocessableEntityException $e) {
-                var_dump($e->getErrors());
-            }
-      requestBody:
-        $ref: '#/components/requestBodies/Pet'
-    put:
-      tags:
-        - pet
-      summary: Update an existing pet
-      description: ''
-      operationId: updatePet
-      responses:
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-        '405':
-          description: Validation exception
-      security:
-        - Rex MFBank_auth:
-            - 'write:pets'
-            - 'read:pets'
-      x-codeSamples:
-        - lang: PHP
-          source: |
-            $form = new \Rex MFBank\Entities\Pet();
-            $form->setPetId(1);
-            $form->setPetType("Dog");
-            $form->setName("Rex");
-            // set other fields
-            try {
-                $pet = $client->pets()->update($form);
-            } catch (UnprocessableEntityException $e) {
-                var_dump($e->getErrors());
-            }
-      requestBody:
-        $ref: '#/components/requestBodies/Pet'
-  '/pet/{petId}':
+  /banks/update:
     get:
       tags:
-        - pet
-      summary: Find pet by ID
-      description: Returns a single pet
-      operationId: getPetById
+        - Bank Information
+      summary: Update Bank Info
+      operationId: updateGacBank
       parameters:
-        - name: petId
-          in: path
-          description: ID of pet to return
+        - name: gacBanksRequest
+          in: query
           required: true
-          deprecated: true
           schema:
-            type: integer
-            format: int64
+            $ref: '#/components/schemas/BaBanksRequest'
       responses:
         '200':
-          description: successful operation
+          description: Update Bank Info
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-      security:
-        - api_key: []
-    post:
+                $ref: '#/components/schemas/BaBanksRequest'
+    put:
       tags:
-        - pet
-      summary: Updates a pet in the store with form data
-      description: ''
-      operationId: updatePetWithForm
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet that needs to be updated
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '405':
-          description: Invalid input
-      security:
-        - Rex MFBank_auth:
-            - 'write:pets'
-            - 'read:pets'
+        - Bank Information
+      summary: Update Bank Info
+      operationId: updateGacBank_1
       requestBody:
         content:
-          application/x-www-form-urlencoded:
+          application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  description: Updated name of the pet
-                  type: string
-                status:
-                  description: Updated status of the pet
-                  type: string
-    delete:
+              $ref: '#/components/schemas/BaBanksRequest'
+        required: true
+      responses:
+        '200':
+          description: Update Bank Info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaBanksRequest'
+  /orders/payment/status:
+    put:
       tags:
-        - pet
-      summary: Deletes a pet
-      description: ''
-      operationId: deletePet
+        - sale-orders-controller
+      summary: Update Payment Status
+      operationId: updatePaymentStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSaleOrdersPaymentStatusRequest'
+        required: true
+      responses:
+        '200':
+          description: Update Payment Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateStoreResponse'
+  /orders/cancel:
+    put:
+      tags:
+        - sale-orders-controller
+      summary: Cancel Order
+      operationId: cancelOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelSaleOrdersRequest'
+        required: true
+      responses:
+        '200':
+          description: Cancel Order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateStoreResponse'
+  /masterProduct/{id}/toggle:
+    put:
+      tags:
+        - master-product-controller
+      summary: Disable/Enable Master Product
+      operationId: toggleMasterProduct
       parameters:
-        - name: api_key
-          in: header
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Disable/Enable Master Product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+  /vendors/save:
+    post:
+      tags:
+        - Vendor Management
+      summary: Creates or updates a new card vendor record
+      operationId: createCardVendor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VendorRequestDto'
+        required: true
+      responses:
+        '200':
+          description: Create Ba Vendor Data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaLookUpDataInfo'
+  /usermanager/verifyotp:
+    post:
+      tags:
+        - usermanager
+      summary: Verify OTP
+      operationId: VerifyOTP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyOTPRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: Verify OTP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaLookUpDataInfo'
+  /usermanager/updateUser:
+    post:
+      tags:
+        - usermanager
+      summary: Update User Profile
+      operationId: UpdateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfo'
+        required: true
+      responses:
+        '200':
+          description: Update User Profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RspWebInfo'
+  /usermanager/setTransactionPin:
+    post:
+      tags:
+        - usermanager
+      summary: Set Transaction Pin
+      operationId: setTransactionPin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionPinRequest'
+        required: true
+      responses:
+        '200':
+          description: Set Transaction Pin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RspWebInfo'
+  /usermanager/selfPasswordReset:
+    post:
+      tags:
+        - usermanager
+      summary: Self Password Reset with OTP
+      operationId: selfPasswordReset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+        required: true
+      responses:
+        '200':
+          description: Self Password Reset with OTP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaUserProfiles'
+  /usermanager/saveuser:
+    post:
+      tags:
+        - usermanager
+      summary: Save User Profile
+      operationId: SaveUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfo'
+        required: true
+      responses:
+        '200':
+          description: Save User Profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RspWebInfo'
+  /usermanager/login:
+    post:
+      tags:
+        - usermanager
+      summary: Login with username and password
+      operationId: loginUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserRequest'
+        required: true
+      responses:
+        '200':
+          description: Login with username and password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelResponse'
+  /usermanager/changePIN:
+    post:
+      tags:
+        - usermanager
+      summary: Change PIN
+      operationId: changePIN
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePinRequest'
+        required: true
+      responses:
+        '200':
+          description: Change PIN
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RspWebInfo'
+  /transfer/internalTransfer:
+    post:
+      tags:
+        - transfer
+      summary: Internal Transfer between accounts
+      operationId: internalTransfer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequestDto'
+        required: true
+      responses:
+        '200':
+          description: Internal Transfer between accounts
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseChannelInfo'
+  /transfer/interbankFundTransfer:
+    post:
+      tags:
+        - transfer
+      summary: Interbank Fund Transfer
+      operationId: interbankFundTransfer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequestDto'
+        required: true
+      responses:
+        '200':
+          description: Do Interbank fund transfer
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseChannelInfo'
+  /transfer/interbankAccountLookUp:
+    post:
+      tags:
+        - transfer
+      summary: Account Name lookup
+      operationId: accountLookUp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NameInquiryRequest'
+        required: true
+      responses:
+        '200':
+          description: verify name attached to an account
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/NameInquiryResponse'
+  /store/update:
+    post:
+      tags:
+        - store-controller
+      summary: Update Store
+      operationId: updateStore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStoreRequest'
+        required: true
+      responses:
+        '200':
+          description: Update Store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateStoreResponse'
+  /store/search:
+    post:
+      tags:
+        - store-controller
+      summary: Search Store
+      operationId: search
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchQueryRequest'
+        required: true
+      responses:
+        '200':
+          description: Search Store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListStoreResponse'
+  /store/create:
+    post:
+      tags:
+        - store-controller
+      summary: Create a new Store
+      operationId: createStore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStoreRequest'
+        required: true
+      responses:
+        '200':
+          description: Create a new Store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateStoreResponse'
+  /productCategory/update:
+    post:
+      tags:
+        - product-category-controller
+      summary: Update product category
+      operationId: updateProductCategory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductCategoryRequest'
+        required: true
+      responses:
+        '200':
+          description: Update product category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateProductCategoryResponse'
+  /productCategory/search:
+    post:
+      tags:
+        - product-category-controller
+      summary: Search product category
+      operationId: search_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchQueryRequest'
+        required: true
+      responses:
+        '200':
+          description: Search product category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProductCategoryResponse'
+  /productCategory/create:
+    post:
+      tags:
+        - product-category-controller
+      summary: Save a new Category
+      operationId: createProductCategory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductCategoryRequest'
+        required: true
+      responses:
+        '200':
+          description: Save new Category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateProductCategoryResponse'
+  /param/save:
+    post:
+      tags:
+        - System Config Params
+      summary: Create a new Param
+      operationId: createBaParam
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaParamRequest'
+        required: true
+      responses:
+        '200':
+          description: Create new Param
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaParamRequest'
+  /otp/save:
+    post:
+      tags:
+        - Gac Aggregator
+      summary: Create a new Otp
+      operationId: createOtp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaOtpRequest'
+        required: true
+      responses:
+        '200':
+          description: Create new Otp
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaOtpRequest'
+  /orders/filter:
+    post:
+      tags:
+        - sale-orders-controller
+      summary: Filter sale orders
+      operationId: filterSaleOrders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchSaleOrdersRequest'
+        required: true
+      responses:
+        '200':
+          description: Filter  sale orders
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchSaleOrdersResponse'
+  /orders/create:
+    post:
+      tags:
+        - sale-orders-controller
+      summary: Create an Order
+      operationId: createSaleOrders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSaleOrdersRequest'
+        required: true
+      responses:
+        '200':
+          description: Create an Order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateStoreResponse'
+  /onboarding/register:
+    post:
+      tags:
+        - onboarding
+      summary: Onboard a customer
+      operationId: onboardCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnboardingCustomerDto'
+        required: true
+      responses:
+        '200':
+          description: Onboard a customer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginInfo'
+  /onboarding/preonboard-validate:
+    post:
+      tags:
+        - onboarding
+      summary: Pre onboarding validation details
+      operationId: validateOnboard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnboardingValidationDto'
+        required: true
+      responses:
+        '200':
+          description: Pre onboarding validation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginInfo'
+  /notification/email/office356:
+    post:
+      tags:
+        - notification-controller
+      operationId: sendOffice365Mail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /notification/email/gmail:
+    post:
+      tags:
+        - notification-controller
+      operationId: sendGmail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /notification/email/aws:
+    post:
+      tags:
+        - notification-controller
+      operationId: sendAWSMail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /messagingTemplate/save:
+    post:
+      tags:
+        - Email and SMS Messaging Template
+      summary: Save message template
+      operationId: save
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageTemplateDto'
+        required: true
+      responses:
+        '200':
+          description: Save message template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseInfo'
+  /merchantProduct/update:
+    post:
+      tags:
+        - merchant-product-controller
+      summary: Update a new merchant product
+      operationId: updateMerchantProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMerchantProductRequest'
+        required: true
+      responses:
+        '200':
+          description: Save new merchant product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateMerchantProductResponse'
+  /merchantProduct/search:
+    post:
+      tags:
+        - merchant-product-controller
+      summary: Search merchant product
+      operationId: search_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchQueryRequest'
+        required: true
+      responses:
+        '200':
+          description: Search merchant product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMerchantProductResponse'
+  /merchantProduct/filter:
+    post:
+      tags:
+        - merchant-product-controller
+      summary: Filter merchant product
+      operationId: filterMerchantProducts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterMerchantProductRequest'
+        required: true
+      responses:
+        '200':
+          description: Filter merchant product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilterMerchantProductResponse'
+  /merchantProduct/create:
+    post:
+      tags:
+        - merchant-product-controller
+      summary: Create a new merchant product
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMerchantProductRequest'
+        required: true
+      responses:
+        '200':
+          description: Save new merchant product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateMerchantProductResponse'
+  /masterProduct/update:
+    post:
+      tags:
+        - master-product-controller
+      summary: Update master product
+      operationId: updateMasterProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMasterProductRequest'
+        required: true
+      responses:
+        '200':
+          description: Update master product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateMasterProductResponse'
+  /masterProduct/create:
+    post:
+      tags:
+        - master-product-controller
+      summary: Create a new master product
+      operationId: createMasterProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMasterProductRequest'
+        required: true
+      responses:
+        '200':
+          description: Create a new master product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateMasterProductResponse'
+  /makerChecker/saveUserActivity:
+    post:
+      tags:
+        - Maker Checker
+      summary: Log User Activity Update for maker-checker
+      operationId: createMakerCheckerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaMakerCheckerLogRequest'
+        required: true
+      responses:
+        '200':
+          description: Log User Activity Update for maker-checker
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaMakerCheckerLogRequest'
+  /makerChecker/authorizeMakerChecker:
+    post:
+      tags:
+        - Maker Checker
+      summary: Authorize Maker Checker
+      operationId: authorizeMakerCheckerUserUpdate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/VerifyActionDto'
+        required: true
+      responses:
+        '200':
+          description: Authorize Maker Checker for User Update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaMakerCheckerLogInfo'
+  /lookupdata/save:
+    post:
+      tags:
+        - Static Lookup Data Maintenance
+      summary: Create a new lookupData record
+      operationId: createLookUpData
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaLookUpDataRequest'
+        required: true
+      responses:
+        '200':
+          description: Create Crd Look up Data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaLookUpDataRequest'
+  /fileuploadservice/uploadstaticfile:
+    post:
+      tags:
+        - fileuploadservice
+      operationId: UploadStaticFile
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseChannelInfo'
+  /fileuploadservice/uploadfile:
+    post:
+      tags:
+        - fileuploadservice
+      operationId: UploadDocument2
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseChannelInfo'
+  /fileuploadservice/uploadfileBK:
+    post:
+      tags:
+        - fileuploadservice
+      operationId: UploadDocument
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseChannelInfo'
+  /fileuploadservice/uploadAgentDoc:
+    post:
+      tags:
+        - fileuploadservice
+      operationId: UploadAgentDoc
+      parameters:
+        - name: accountNo
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: FILETYPE
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseChannelInfo'
+  /document/save:
+    post:
+      tags:
+        - Document
+      summary: Save a new Document
+      operationId: saveDocument
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentRequest'
+        required: true
+      responses:
+        '200':
+          description: Save new Document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentRequest'
+  /cardservice/updateCardLimit:
+    post:
+      tags:
+        - card-management-controller
+      summary: Update Card Limit
+      operationId: updateCardLimit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardLimitRequestDto'
+        required: true
+      responses:
+        '200':
+          description: Update Card Limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardLimitResponseDto'
+  /cardservice/updateCardControl:
+    post:
+      tags:
+        - card-management-controller
+      summary: Update Card Control
+      operationId: updateCardControl
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardControlRequestDto'
+        required: true
+      responses:
+        '200':
+          description: Update Card Control
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardLimitResponseDto'
+  /cardservice/unlock-card:
+    post:
+      tags:
+        - card-management-controller
+      summary: Unlock card
+      operationId: unLockCard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardUnLockRequest'
+        required: true
+      responses:
+        '200':
+          description: Unlock card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardResponseDto'
+  /cardservice/request-card:
+    post:
+      tags:
+        - card-management-controller
+      summary: Create Card Request
+      operationId: createCardRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardCreationRequest'
+        required: true
+      responses:
+        '200':
+          description: Create Card Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardCreationResponse'
+  /cardservice/replaceCard:
+    post:
+      tags:
+        - card-management-controller
+      summary: replace card
+      operationId: replaceCard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplaceCardRequest'
+        required: true
+      responses:
+        '200':
+          description: replace card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardCreationResponse'
+  /cardservice/pin/reset:
+    post:
+      tags:
+        - card-management-controller
+      summary: Reset Pin
+      operationId: pinReset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PinResetRequestDto'
+        required: true
+      responses:
+        '200':
+          description: Reset Pin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PinResetResponseDto'
+  /cardservice/lock-card:
+    post:
+      tags:
+        - card-management-controller
+      summary: Temporary lock card
+      operationId: lockCard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardLockRequest'
+        required: true
+      responses:
+        '200':
+          description: Temporary lock card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardResponseDto'
+  /cardservice/history:
+    post:
+      tags:
+        - card-management-controller
+      summary: Get Recent Card Transaction History
+      operationId: fetchCardTransactionHistory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardMiniTranRequest'
+        required: true
+      responses:
+        '200':
+          description: Get Recent Card Transaction History
+          content:
+            application/json: {}
+  /cardservice/changePin:
+    post:
+      tags:
+        - card-management-controller
+      summary: Change Pin
+      operationId: changeCardPin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePinRequestDto'
+        required: true
+      responses:
+        '200':
+          description: Change Pin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangePinResponseDto'
+  /cardservice/card/status:
+    post:
+      tags:
+        - card-management-controller
+      summary: Query Card Status
+      operationId: queryCardStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardStatusRequestDto'
+        required: true
+      responses:
+        '200':
+          description: Query Card Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardStatusResponseDto'
+  /cardservice/card-detail/{card-id}:
+    post:
+      tags:
+        - card-management-controller
+      summary: Fetch Card Detail
+      operationId: fetchCardDetail
+      parameters:
+        - name: card-id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Fetch Card Detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardCreationResponse'
+  /cardservice/addSupplementaryCard:
+    post:
+      tags:
+        - card-management-controller
+      summary: Add supplementary card
+      operationId: addSupplementaryCard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSupplementaryCardRequest'
+        required: true
+      responses:
+        '200':
+          description: Add supplementary card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardResponseDto'
+  /cardservice/account/wallet/create:
+    post:
+      tags:
+        - card-management-controller
+      summary: creating wallet account
+      operationId: createSavingsAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWalletAccountRequestDto'
+        required: true
+      responses:
+        '200':
+          description: 'open a wallet account '
+          content:
+            application/json: {}
+  /cardservice/account/unlink:
+    post:
+      tags:
+        - card-management-controller
+      summary: Unlink Account From Card
+      operationId: unlinkAccountFromCard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnlinkAccountRequestDto'
+        required: true
+      responses:
+        '200':
+          description: Unlink Account From Card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnlinkAccountResponseDto'
+  /cardservice/account/saving/create:
+    post:
+      tags:
+        - card-management-controller
+      summary: Create savings account
+      operationId: createSavingsAccount_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSavingAccountRequestDto'
+        required: true
+      responses:
+        '200':
+          description: Create savings account
+          content:
+            application/json: {}
+  /cardservice/account/card:
+    post:
+      tags:
+        - card-management-controller
+      summary: Create Card For an Existing Account
+      operationId: createCardRequest_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardAccountCreationRequest'
+        required: true
+      responses:
+        '200':
+          description: Create Card For an Existing Account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardCreationResponse'
+  /banks/save:
+    post:
+      tags:
+        - Bank Information
+      summary: Create a new Bank
+      operationId: createGacBank
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaBanksRequest'
+        required: true
+      responses:
+        '200':
+          description: Create new Bank
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaBanksRequest'
+  /baentities/save:
+    post:
+      tags:
+        - Ba Access Keys
+      summary: Create a new Ba Enitity
+      operationId: createEntity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitiesRequest'
+        required: true
+      responses:
+        '200':
+          description: Create Gac Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitiesInfoResponse'
+  /baaccount/mobileNumber:
+    post:
+      tags:
+        - 'account '
+      summary: this is to update mobile number
+      operationId: changeMobileNo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeMoblieNoRequest'
+      responses:
+        '200':
+          description: changing the mobile  of the account
+          content:
+            application/json: {}
+  /baaccount/email:
+    post:
+      tags:
+        - 'account '
+      summary: this is to update email
+      operationId: addEmail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeEmailRequest'
+      responses:
+        '200':
+          description: changing the email  of the account
+          content:
+            application/json: {}
+  /baaccount/document:
+    post:
+      tags:
+        - 'account '
+      summary: this is to update document
+      operationId: addDocument
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddDocumentRequest'
+      responses:
+        '200':
+          description: adding photograph  to the account
+          content:
+            application/json: {}
+  /baaccount/create:
+    post:
+      tags:
+        - 'account '
+      summary: this is to create baaccount
+      operationId: createBaaccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountRequest'
+      responses:
+        '200':
+          description: expose endpoint to create account for onboarded customer
+          content:
+            application/json: {}
+  /baaccount/addPhotograph:
+    post:
+      tags:
+        - 'account '
+      summary: this is to update mobile number
+      operationId: addPhotograph
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddPhotoRequest'
+      responses:
+        '200':
+          description: adding photograph  to the account
+          content:
+            application/json: {}
+  /baaccount/addBvn:
+    post:
+      tags:
+        - 'account '
+      summary: 'this is to update bvn '
+      operationId: addBvn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddBvnRequest'
+      responses:
+        '200':
+          description: adding bvn to the account
+          content:
+            application/json: {}
+  /authenticate:
+    post:
+      tags:
+        - jwt
+      operationId: createAuthenticationToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JwtRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /apiKeyManager/save:
+    post:
+      tags:
+        - Third party API Key Management
+      summary: Save or update API Key Management
+      operationId: createBaAccessKeys
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaAccessKeysRequest'
+        required: true
+      responses:
+        '200':
+          description: Save or update API Key Management
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaAccessKeysRequest'
+  /account/saving:
+    post:
+      tags:
+        - account-service-controller
+      summary: 'create a savings account '
+      operationId: createSavingsAccount_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenAccountRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /account/debit:
+    post:
+      tags:
+        - account-service-controller
+      summary: make debit transaction
+      operationId: debitTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SLSDebitCreditRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /account/credit:
+    post:
+      tags:
+        - account-service-controller
+      summary: make credit transaction
+      operationId: creditTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SLSDebitCreditRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /account/NIPtransfer:
+    post:
+      tags:
+        - account-service-controller
+      summary: carry out fund transfer
+      operationId: nipFundTransfer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NIPInterBankTransferRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /vendors/getbyvendorcode:
+    get:
+      tags:
+        - Vendor Management
+      summary: Get vendor from Ba Vendor Data Table
+      operationId: getVendorByCode
+      parameters:
+        - name: vendorCode
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get vendor from Ba Vendor Table
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaLookUpDataInfo'
+  /vendors/getbycategoryandentitycode:
+    get:
+      tags:
+        - Vendor Management
+      summary: Get Vendors from table
+      operationId: getByCategoryAndEntityCode
+      parameters:
+        - name: categoryCode
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: entityCode
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get Vendors from ba vendors table by category code and entity code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaLookUpDataInfo'
+  /vendors/get:
+    get:
+      tags:
+        - Vendor Management
+      summary: Get all Vendors from Vendor Table
+      operationId: getByEntityCode
+      responses:
+        '200':
+          description: Get vendors from Vendors Table
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaLookUpDataInfo'
+  /vendors/getByEntityCode/{entityCode}:
+    get:
+      tags:
+        - Vendor Management
+      summary: Get all Vendors from Vendor Table
+      operationId: getByEntityCode_1
+      parameters:
+        - name: entityCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get vendors from Vendors Table
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaLookUpDataInfo'
+  /validate:
+    get:
+      tags:
+        - jwt
+      operationId: validateJWT
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /usermanager/verifyUserLink:
+    get:
+      tags:
+        - usermanager
+      summary: verify User Link
+      operationId: verifyUserLink
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: verifyUserLink
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaLookUpDataInfo'
+  /usermanager/resendotp:
+    get:
+      tags:
+        - usermanager
+      summary: Resend OTP
+      operationId: ResendOTP
+      parameters:
+        - name: entityCode
+          in: query
           required: false
           schema:
             type: string
-          example: 'Bearer <TOKEN>'
-        - name: petId
-          in: path
-          description: Pet id to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '400':
-          description: Invalid pet value
-      security:
-        - Rex MFBank_auth:
-            - 'write:pets'
-            - 'read:pets'
-  '/pet/{petId}/uploadImage':
-    post:
-      tags:
-        - pet
-      summary: uploads an image
-      description: ''
-      operationId: uploadFile
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet to update
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-      security:
-        - Rex MFBank_auth:
-            - 'write:pets'
-            - 'read:pets'
-      requestBody:
-        content:
-          application/octet-stream:
-            schema:
-              type: string
-              format: binary
-  /pet/findByStatus:
-    get:
-      tags:
-        - pet
-      summary: Finds Pets by status
-      description: Multiple status values can be provided with comma separated strings
-      operationId: findPetsByStatus
-      parameters:
-        - name: status
+        - name: actionCode
           in: query
-          description: Status values that need to be considered for filter
-          required: true
-          style: form
+          required: false
           schema:
-            type: array
-            minItems: 1
-            maxItems: 3
-            items:
-              type: string
-              enum:
-                - available
-                - pending
-                - sold
-              default: available
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid status value
-      security:
-        - Rex MFBank_auth:
-            - 'write:pets'
-            - 'read:pets'
-  /pet/findByTags:
-    get:
-      tags:
-        - pet
-      summary: Finds Pets by tags
-      description: >-
-        Multiple tags can be provided with comma separated strings. Use tag1,
-        tag2, tag3 for testing.
-      operationId: findPetsByTags
-      deprecated: true
-      parameters:
-        - name: tags
+            type: string
+        - name: username
           in: query
-          description: Tags to filter by
           required: true
-          style: form
           schema:
-            type: array
-            items:
-              type: string
+            type: string
       responses:
         '200':
-          description: successful operation
+          description: Resend OTP
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-            application/xml:
-              schema:
-                type: array
-                maxItems: 999
-                items:
-                  maxItems: 111
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid tag value
-      security:
-        - Rex MFBank_auth:
-            - 'write:pets'
-            - 'read:pets'
-  /store/inventory:
+                $ref: '#/components/schemas/BaLookUpDataInfo'
+  /usermanager/initiatePasswordReset:
     get:
       tags:
-        - store
-      summary: Returns pet inventories by status
-      description: Returns a map of status codes to quantities
-      operationId: getInventory
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                minProperties: 2
-                additionalProperties:
-                  type: integer
-                  format: int32
-      security:
-        - api_key: []
-  /store/order:
-    post:
-      tags:
-        - store
-      summary: Place an order for a pet
-      description: ''
-      operationId: placeOrder
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Order'
-        '400':
-          description: Invalid Order
-          content:
-            application/json:
-              example:
-                status: 400
-                message: 'Invalid Order'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Order'
-        description: order placed for purchasing the pet
-        required: true
-  '/store/order/{orderId}':
-    get:
-      tags:
-        - store
-      summary: Find purchase order by ID
-      description: >-
-        For valid response try integer IDs with value <= 5 or > 10. Other values
-        will generated exceptions
-      operationId: getOrderById
+        - usermanager
+      summary: Initiate password reset or forgot password
+      operationId: InitiatePasswordReset
       parameters:
-        - name: orderId
-          in: path
-          description: ID of pet that needs to be fetched
+        - name: entityCode
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: username
+          in: query
           required: true
           schema:
-            type: integer
-            format: int64
-            minimum: 1
-            maximum: 5
+            type: string
       responses:
         '200':
-          description: successful operation
+          description: Initiate password reset or forgot password
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
-            application/xml:
+                $ref: '#/components/schemas/BaLookUpDataInfo'
+  /usermanager/generateUserQrCode:
+    get:
+      tags:
+        - usermanager
+      summary: Generate new user QR Code
+      operationId: generateNewUserQRCode
+      parameters:
+        - name: entityCode
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Generate new user QR Code
+          content:
+            application/json:
               schema:
-                $ref: '#/components/schemas/Order'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Order not found
+                $ref: '#/components/schemas/BaLookUpDataInfo'
+  /store/{code}:
+    get:
+      tags:
+        - store-controller
+      summary: Get Store
+      operationId: getStore
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get Store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStoreResponse'
     delete:
       tags:
-        - store
-      summary: Delete purchase order by ID
-      description: >-
-        For valid response try integer IDs with value < 1000. Anything above
-        1000 or nonintegers will generate API errors
-      operationId: deleteOrder
+        - store-controller
+      summary: Delete Store
+      operationId: deleteStore
       parameters:
-        - name: orderId
+        - name: code
           in: path
-          description: ID of the order that needs to be deleted
-          required: true
-          schema:
-            type: string
-            minimum: 1
-      responses:
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Order not found
-  /store/subscribe:
-    post:
-      tags:
-        - store
-      summary: Subscribe to the Store events
-      description: Add subscription for a store events
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                callbackUrl:
-                  type: string
-                  format: uri
-                  description: This URL will be called by the server when the desired event will occur
-                  example: https://myserver.com/send/callback/here
-                eventName:
-                  type: string
-                  description: Event name for the subscription
-                  enum:
-                    - orderInProgress
-                    - orderShipped
-                    - orderDelivered
-                  example: orderInProgress
-              required:
-                - callbackUrl
-                - eventName
-      responses:
-        '201':
-          description: Subscription added
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  subscriptionId:
-                    type: string
-                    example: AAA-123-BBB-456
-      callbacks:
-        orderInProgress:
-          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
-            servers:
-              - url: //callback-url.path-level/v1
-                description: Path level server 1
-              - url: //callback-url.path-level/v2
-                description: Path level server 2
-            post:
-              summary: Order in Progress (Summary)
-              description: A callback triggered every time an Order is updated status to "inProgress" (Description)
-              externalDocs:
-                description: Find out more
-                url: 'https://more-details.com/demo'
-              requestBody:
-                content:
-                  application/json:
-                    schema:
-                      type: object
-                      properties:
-                        orderId:
-                          type: string
-                          example: '123'
-                        timestamp:
-                          type: string
-                          format: date-time
-                          example: '2018-10-19T16:46:45Z'
-                        status:
-                          type: string
-                          example: 'inProgress'
-                  application/xml:
-                    schema:
-                      type: object
-                      properties:
-                        orderId:
-                          type: string
-                          example: '123'
-                    example: |
-                      <?xml version="1.0" encoding="UTF-8"?>
-                      <root>
-                        <orderId>123</orderId>
-                        <status>inProgress</status>
-                        <timestamp>2018-10-19T16:46:45Z</timestamp>
-                      </root>
-              responses:
-                '200':
-                  description: Callback successfully processed and no retries will be performed
-                  content:
-                    application/json:
-                      schema:
-                        type: object
-                        properties:
-                          someProp:
-                            type: string
-                            example: '123'
-                '299':
-                  description: Response for cancelling subscription
-                '500':
-                  description: Callback processing failed and retries will be performed
-              x-codeSamples:
-                - lang: 'C#'
-                  source: |
-                    Rex MFBank.v1.Pet pet = new Rex MFBank.v1.Pet();
-                    pet.setApiKey("your api key");
-                    pet.petType = Rex MFBank.v1.Pet.TYPE_DOG;
-                    pet.name = "Rex";
-                    // set other fields
-                    Rex MFBankResponse response = pet.create();
-                    if (response.statusCode == HttpStatusCode.Created)
-                    {
-                      // Successfully created
-                    }
-                    else
-                    {
-                      // Something wrong -- check response for errors
-                      Console.WriteLine(response.getRawResponse());
-                    }
-                - lang: PHP
-                  source: |
-                    $form = new \Rex MFBank\Entities\Pet();
-                    $form->setPetType("Dog");
-                    $form->setName("Rex");
-                    // set other fields
-                    try {
-                        $pet = $client->pets()->create($form);
-                    } catch (UnprocessableEntityException $e) {
-                        var_dump($e->getErrors());
-                    }
-            put:
-              description: Order in Progress (Only Description)
-              servers:
-                - url: //callback-url.operation-level/v1
-                  description: Operation level server 1 (Operation override)
-                - url: //callback-url.operation-level/v2
-                  description: Operation level server 2 (Operation override)
-              requestBody:
-                content:
-                  application/json:
-                    schema:
-                      type: object
-                      properties:
-                        orderId:
-                          type: string
-                          example: '123'
-                        timestamp:
-                          type: string
-                          format: date-time
-                          example: '2018-10-19T16:46:45Z'
-                        status:
-                          type: string
-                          example: 'inProgress'
-                  application/xml:
-                    schema:
-                      type: object
-                      properties:
-                        orderId:
-                          type: string
-                          example: '123'
-                    example: |
-                      <?xml version="1.0" encoding="UTF-8"?>
-                      <root>
-                        <orderId>123</orderId>
-                        <status>inProgress</status>
-                        <timestamp>2018-10-19T16:46:45Z</timestamp>
-                      </root>
-              responses:
-                '200':
-                  description: Callback successfully processed and no retries will be performed
-                  content:
-                    application/json:
-                      schema:
-                        type: object
-                        properties:
-                          someProp:
-                            type: string
-                            example: '123'
-        orderShipped:
-          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
-            post:
-              description: |
-                Very long description
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                culpa qui officia deserunt mollit anim id est laborum.
-              requestBody:
-                content:
-                  application/json:
-                    schema:
-                      type: object
-                      properties:
-                        orderId:
-                          type: string
-                          example: '123'
-                        timestamp:
-                          type: string
-                          format: date-time
-                          example: '2018-10-19T16:46:45Z'
-                        estimatedDeliveryDate:
-                          type: string
-                          format: date-time
-                          example: '2018-11-11T16:00:00Z'
-              responses:
-                '200':
-                  description: Callback successfully processed and no retries will be performed
-        orderDelivered:
-          'http://notificationServer.com?url={$request.body#/callbackUrl}&event={$request.body#/eventName}':
-            post:
-              deprecated: true
-              summary: Order delivered
-              description: A callback triggered every time an Order is delivered to the recipient
-              requestBody:
-                content:
-                  application/json:
-                    schema:
-                      type: object
-                      properties:
-                        orderId:
-                          type: string
-                          example: '123'
-                        timestamp:
-                          type: string
-                          format: date-time
-                          example: '2018-10-19T16:46:45Z'
-              responses:
-                '200':
-                  description: Callback successfully processed and no retries will be performed
-  /user:
-    post:
-      tags:
-        - user
-      summary: Create user
-      description: This can only be done by the logged in user.
-      operationId: createUser
-      responses:
-        default:
-          description: successful operation
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        description: Created user object
-        required: true
-  '/user/{username}':
-    get:
-      tags:
-        - user
-      summary: Get user by user name
-      description: ''
-      operationId: getUserByName
-      parameters:
-        - name: username
-          in: path
-          description: 'The name that needs to be fetched. Use user1 for testing. '
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: successful operation
+          description: Delete Store
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
-        '400':
-          description: Invalid username supplied
-        '404':
-          description: User not found
-    put:
+                $ref: '#/components/schemas/GetStoreResponse'
+  /store/list:
+    get:
       tags:
-        - user
-      summary: Updated user
-      description: This can only be done by the logged in user.
-      operationId: updateUser
+        - store-controller
+      summary: List Stores
+      operationId: listStore
+      responses:
+        '200':
+          description: List Stores
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListStoreResponse'
+  /productCategory/{code}:
+    get:
+      tags:
+        - product-category-controller
+      summary: Get Product Category
+      operationId: getProductCategory
       parameters:
-        - name: username
+        - name: code
           in: path
-          description: name that need to be deleted
           required: true
           schema:
             type: string
       responses:
-        '400':
-          description: Invalid user supplied
-        '404':
-          description: User not found
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        description: Updated user object
-        required: true
+        '200':
+          description: Get Product Category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProductCategoryResponse'
     delete:
       tags:
-        - user
-      summary: Delete user
-      description: This can only be done by the logged in user.
-      operationId: deleteUser
+        - product-category-controller
+      summary: Delete Product Category
+      operationId: deleteProductCategory
       parameters:
-        - name: username
+        - name: code
           in: path
-          description: The name that needs to be deleted
-          required: true
-          schema:
-            type: string
-      responses:
-        '400':
-          description: Invalid username supplied
-        '404':
-          description: User not found
-  /user/createWithArray:
-    post:
-      tags:
-        - user
-      summary: Creates list of users with given input array
-      description: ''
-      operationId: createUsersWithArrayInput
-      responses:
-        default:
-          description: successful operation
-      requestBody:
-        $ref: '#/components/requestBodies/UserArray'
-  /user/createWithList:
-    post:
-      tags:
-        - user
-      summary: Creates list of users with given input array
-      description: ''
-      operationId: createUsersWithListInput
-      responses:
-        default:
-          description: successful operation
-      requestBody:
-        $ref: '#/components/requestBodies/UserArray'
-  /user/login:
-    get:
-      tags:
-        - user
-      summary: Logs user into the system
-      description: ''
-      operationId: loginUser
-      parameters:
-        - name: username
-          in: query
-          description: The user name for login
-          required: true
-          schema:
-            type: string
-        - name: password
-          in: query
-          description: The password for login in clear text
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: successful operation
-          headers:
-            X-Rate-Limit:
-              description: calls per hour allowed by the user
-              schema:
-                type: integer
-                format: int32
-            X-Expires-After:
-              description: date in UTC when token expires
-              schema:
-                type: string
-                format: date-time
+          description: Delete Product Category
           content:
             application/json:
               schema:
-                type: string
-              examples:
-                response:
-                  value: OK
-            application/xml:
-              schema:
-                type: string
-              examples:
-                response:
-                  value: <Message> OK </Message>
-            text/plain:
-              examples:
-                response:
-                  value: OK
-        '400':
-          description: Invalid username/password supplied
-  /user/logout:
+                $ref: '#/components/schemas/ModelResponse'
+  /productCategory/list:
     get:
       tags:
-        - user
-      summary: Logs out current logged in user session
-      description: ''
-      operationId: logoutUser
+        - product-category-controller
+      summary: List Product Categories
+      operationId: getProductCategories
       responses:
-        default:
-          description: successful operation
+        '200':
+          description: List Product Categories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProductCategoryResponse'
+  /param/getparam:
+    get:
+      tags:
+        - System Config Params
+      summary: Get all Crd Param
+      operationId: fetchParam
+      responses:
+        '200':
+          description: Get all Crd Param
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaParamInfo'
+  /otp/getOtps:
+    get:
+      tags:
+        - Gac Aggregator
+      summary: Get all Otps
+      operationId: fetchOtps
+      responses:
+        '200':
+          description: Get all Otps
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaOtpInfo'
+  /orders/{orderNumber}/fetch:
+    get:
+      tags:
+        - sale-orders-controller
+      summary: Get SaleOrder By OrderNumber
+      operationId: getSaleOrdersByOrderNumber
+      parameters:
+        - name: orderNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get SaleOrder By OrderNumber
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaleOrdersResponse'
+  /orders/{id}:
+    get:
+      tags:
+        - sale-orders-controller
+      summary: Get SaleOrder
+      operationId: getSaleOrder
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get SaleOrder
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaleOrdersResponse'
+  /messagingTemplate/getMessageTemplates:
+    get:
+      tags:
+        - Email and SMS Messaging Template
+      summary: Get all SMS and Email Message Template
+      operationId: fetchList
+      responses:
+        '200':
+          description: Get all SMS and Email Message Template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageTemplateDto'
+  /merchantProduct/{code}:
+    get:
+      tags:
+        - merchant-product-controller
+      summary: Get merchant product
+      operationId: fetchMerchantProduct
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get merchant products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMerchantProductResponse'
+  /merchantProduct/list:
+    get:
+      tags:
+        - merchant-product-controller
+      summary: List Merchant Products
+      operationId: getMerchantProducts
+      responses:
+        '200':
+          description: List Merchant Products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMerchantProductResponse'
+  /merchantProduct/code/{barcode}:
+    get:
+      tags:
+        - merchant-product-controller
+      summary: Get merchant product using bar code
+      operationId: getMerchantProductUsingBarCode
+      parameters:
+        - name: barcode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get merchant product using bar code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMerchantProductResponse'
+  /masterProduct/{code}:
+    get:
+      tags:
+        - master-product-controller
+      summary: Get Master Product
+      operationId: getMasterProduct
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get Master Product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMasterProductResponse'
+  /masterProduct/list:
+    get:
+      tags:
+        - master-product-controller
+      summary: List Master Product
+      operationId: listMasterProducts
+      responses:
+        '200':
+          description: List Master Product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMasterProductResponse'
+  /makerChecker/getPendingMakerChecker:
+    get:
+      tags:
+        - Maker Checker
+      summary: Get all Maker Checker for Agent Update
+      operationId: fetchMakerChecker
+      responses:
+        '200':
+          description: Get all Maker Checkers for Agent Update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaMakerCheckerLogInfo'
+  /lookupdata/userroles:
+    get:
+      tags:
+        - Static Lookup Data Maintenance
+      summary: Fetch list of user roles
+      operationId: FetchUserRoles
+      responses:
+        '200':
+          description: Fetch list of user roles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupDataInfo'
+  /lookupdata/permissions:
+    get:
+      tags:
+        - Static Lookup Data Maintenance
+      summary: Fetch list of permissions
+      operationId: FetchPermissionList
+      responses:
+        '200':
+          description: Fetch list of permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupDataInfo'
+  /lookupdata/listlookupdata:
+    get:
+      tags:
+        - Static Lookup Data Maintenance
+      summary: Fetch lookup data by Code
+      operationId: FetchLookupData
+      parameters:
+        - name: entityCode
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: lookupCode
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: parentCode
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Fetch lookup data by Code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupDataList'
+  /lookupdata/listlookupcategorycode:
+    get:
+      tags:
+        - Static Lookup Data Maintenance
+      summary: Fetch lookup category
+      operationId: FetchLookupCategoryCode
+      responses:
+        '200':
+          description: Fetch lookup category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupDataInfo'
+  /lookupdata/getbalookupdata:
+    get:
+      tags:
+        - Static Lookup Data Maintenance
+      summary: Get all Data from  Lookup Data Table
+      operationId: getAllGacLookUpData
+      parameters:
+        - name: entityCode
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get all data from Crd Look Up Table
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaLookUpDataInfo'
+  /lookupdata/getallcategorycode:
+    get:
+      tags:
+        - Static Lookup Data Maintenance
+      summary: Get all Data from  Lookup Data Table
+      operationId: getAllLookupCategory
+      parameters:
+        - name: categoryCode
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get all data from Ba Look Up Table
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaLookUpDataInfo'
+  /lookupdata/banks:
+    get:
+      tags:
+        - Static Lookup Data Maintenance
+      summary: Fetch banks
+      operationId: FetchBanks
+      parameters:
+        - name: countryCode
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Fetch banks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupDataInfo'
+  /lookupdata/appCountries:
+    get:
+      tags:
+        - Static Lookup Data Maintenance
+      summary: Fetch Onboarding Countries
+      operationId: FetchOnboardingCountries
+      responses:
+        '200':
+          description: Fetch Onboarding Countries
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupDataList'
+  /document/getDocuments:
+    get:
+      tags:
+        - Document
+      summary: Get agent kyc documents
+      operationId: fetchDocuments
+      responses:
+        '200':
+          description: Get agent kyc documents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentInfo'
+  /customerProfile/customers:
+    get:
+      tags:
+        - 'customer profile '
+      summary: fetch all customer profile
+      operationId: fetchAllCustomerProfile
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        '200':
+          description: fetching all customer profile
+          content:
+            application/json: {}
+  /customerProfile/customerId:
+    get:
+      tags:
+        - 'customer profile '
+      summary: fetch customer profile by customer Id
+      operationId: fetchCustomerProfile
+      parameters:
+        - name: customerId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: fetching customer profile by customer id
+          content:
+            application/json: {}
+  /banks/getbanks:
+    get:
+      tags:
+        - Bank Information
+      summary: Get all Gac Banks details
+      operationId: fetchBanksDetails
+      responses:
+        '200':
+          description: Get all Gac Banks details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaBanksInfo'
+  /baentities/getentities:
+    get:
+      tags:
+        - Ba Access Keys
+      summary: Retrieve all Gac Entities
+      operationId: getEntities
+      responses:
+        '200':
+          description: Retrieve all Gac Entities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitiesInfo'
+  /baaccount/merchantCode:
+    get:
+      tags:
+        - 'account '
+      summary: this is to fetch list of  accounts  attach to merchantCode
+      operationId: fetchBaaccountByMerchantCode
+      parameters:
+        - name: merchantCode
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: fetching the list of account attached to a merchant by merchant code
+          content:
+            application/json: {}
+  /baaccount/customerId:
+    get:
+      tags:
+        - 'account '
+      summary: this is to fetch list of  accounts  attach to customerId
+      operationId: fetchBaaccountBycustomerId
+      parameters:
+        - name: customerId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: fetching the list of account attached to a customer by customer Id
+          content:
+            application/json: {}
+  /baaccount/accountName:
+    get:
+      tags:
+        - 'account '
+      summary: this is to fetch the account name by using account number
+      operationId: fetchAccountNameByAccountNumber
+      parameters:
+        - name: accountNumber
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: fetching the account name by  account number
+          content:
+            application/json: {}
+  /baaccount/accountDetails:
+    get:
+      tags:
+        - 'account '
+      summary: this is to fetch the account details by using account number
+      operationId: fetchDetailsByAccountNumber
+      parameters:
+        - name: accountNumber
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: fetching the account details by account number
+          content:
+            application/json: {}
+  /auditlogs/fetch:
+    get:
+      tags:
+        - audit-logs-controller
+      operationId: fetchAuditLogs
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: startDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: keyword
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: categoryCode
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuditLogListResponse'
+  /apiKeyManager/getApiKeys:
+    get:
+      tags:
+        - Third party API Key Management
+      summary: Get list of API Keys
+      operationId: getAllAccessKeys
+      responses:
+        '200':
+          description: Get list of API Keys
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaAccessKeysInfo'
+  /account/transactionStatus:
+    get:
+      tags:
+        - account-service-controller
+      summary: this is fetching the status of the transaction
+      operationId: transactionStatusQuery
+      parameters:
+        - name: sessionId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /account/transactionHistory:
+    get:
+      tags:
+        - account-service-controller
+      summary: this is fetching the list of bank name and bank code
+      operationId: transactionHistory
+      parameters:
+        - name: fromDate
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: toDate
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /account/nameEnquiry:
+    get:
+      tags:
+        - account-service-controller
+      summary: carry out name enquiry
+      operationId: nameEnquiry
+      parameters:
+        - name: accountNo
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: bankId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /account/banklist:
+    get:
+      tags:
+        - account-service-controller
+      summary: this is fetching the list of bank name and bank code
+      operationId: listOfBanks
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /account/balance:
+    get:
+      tags:
+        - account-service-controller
+      summary: this is fetching the account balance using account number
+      operationId: balanceEnquiry
+      parameters:
+        - name: accountNumber
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /masterProduct/{id}/delete:
+    delete:
+      tags:
+        - master-product-controller
+      summary: Delete Master Product
+      operationId: deleteMasterProduct
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Delete Master Product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
 components:
   schemas:
-    ApiResponse:
+    BaBanksRequest:
       type: object
       properties:
+        id:
+          type: integer
+          format: int64
+        bankName:
+          type: string
+        bankCode:
+          type: string
+        bankInstantCode:
+          type: string
+        bankAchCode:
+          type: string
+        countryCode:
+          type: string
+        status:
+          type: string
+        bankLogo:
+          type: string
+    UpdateSaleOrdersPaymentStatusRequest:
+      type: object
+      properties:
+        orderNumber:
+          type: string
+        paymentStatus:
+          type: string
+    CreateStoreResponse:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
         code:
-          type: integer
-          format: int32
-        type:
           type: string
-        message:
-          type: string
-    Cat:
-      'x-tags': ['pet']
-      description: A representation of a cat
-      allOf:
-        - $ref: '#/components/schemas/Pet'
-        - type: object
-          properties:
-            huntingSkill:
-              type: string
-              description: The measured skill for hunting
-              default: lazy
-              example: adventurous
-              enum:
-                - clueless
-                - lazy
-                - adventurous
-                - aggressive
-          required:
-            - huntingSkill
-    Category:
-      type: object
-      properties:
-        id:
-          description: Category ID
-          allOf:
-            - $ref: '#/components/schemas/Id'
         name:
-          description: Category name
           type: string
-          minLength: 1
-        sub:
-          description: Test Sub Category
-          type: object
-          properties:
-            prop1:
-              type: string
-              description: Dumb Property
-      xml:
-        name: Category
-    Dog:
-      description: A representation of a dog
-      allOf:
-        - $ref: '#/components/schemas/Pet'
-        - type: object
-          properties:
-            packSize:
-              type: integer
-              format: int32
-              description: The size of the pack the dog is from
-              default: 1
-              minimum: 1
-          required:
-            - packSize
-    HoneyBee:
-      description: A representation of a honey bee
-      allOf:
-        - $ref: '#/components/schemas/Pet'
-        - type: object
-          properties:
-            honeyPerDay:
-              type: number
-              description: Average amount of honey produced per day in ounces
-              example: 3.14
-              multipleOf: .01
-          required:
-            - honeyPerDay
-    Id:
-      type: integer
-      format: int64
-      readOnly: true
-    Order:
+        storeType:
+          type: string
+        contactPhone:
+          type: string
+        contactEmail:
+          type: string
+        managerUsername:
+          type: string
+        merchantCode:
+          type: string
+        entityCode:
+          type: string
+        status:
+          type: string
+        address:
+          type: string
+        description:
+          type: string
+        isDeleted:
+          type: boolean
+        staffEmails:
+          type: array
+          items:
+            type: string
+    CancelSaleOrdersRequest:
+      type: object
+      properties:
+        orderNumber:
+          type: string
+    BaseResponse:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+    VendorRequestDto:
       type: object
       properties:
         id:
-          description: Order ID
-          allOf:
-            - $ref: '#/components/schemas/Id'
-        petId:
-          description: Pet ID
-          allOf:
-            - $ref: '#/components/schemas/Id'
-        quantity:
           type: integer
-          format: int32
-          minimum: 1
-          default: 1
-        shipDate:
-          description: Estimated ship date
+          format: int64
+        vendorCode:
+          type: string
+        vendorName:
+          type: string
+        entityCode:
+          type: string
+        address:
+          type: string
+        state:
+          type: string
+        vendorCategory:
+          type: string
+        status:
+          type: string
+        clientCode:
+          type: string
+        createdBy:
+          type: string
+        terminalId:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+    BaLookUpDataInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        categoryCode:
+          type: string
+        lookupCode:
+          type: string
+        lookupName:
+          type: string
+        lookupDesc:
+          type: string
+        usageAccess:
+          type: string
+        status:
+          type: string
+        entityCode:
+          type: string
+        countryCode:
+          type: string
+    VerifyOTPRequestDTO:
+      type: object
+      properties:
+        username:
+          type: string
+        mobileNo:
+          type: string
+        otp:
+          type: string
+        entityCode:
+          type: string
+        deviceId:
+          type: string
+    UserInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstname:
+          type: string
+        middlename:
+          type: string
+        lastname:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        entityCode:
+          type: string
+        email:
+          type: string
+        mobileNo:
+          type: string
+        userRole:
+          type: string
+        deviceId:
+          type: string
+        status:
+          type: string
+        branchCode:
+          type: string
+        otpLink:
+          type: string
+        photoLink:
+          type: string
+        identityCardLink:
+          type: string
+        bvnPhotoLink:
+          type: string
+        bvn:
+          type: string
+        city:
+          type: string
+        address:
+          type: string
+        fullname:
+          type: string
+        language:
+          type: string
+        country:
+          type: string
+        dob:
+          type: string
+        lastLoginDate:
+          type: string
+        verifyStatus:
+          type: string
+        authStatus:
+          type: string
+        geolocation:
+          type: string
+        identityNo:
+          type: string
+        identityType:
+          type: string
+        gender:
+          type: string
+        supervisor:
+          type: string
+        rspCode:
+          type: string
+        state:
+          type: string
+        lga:
+          type: string
+        createdDate:
+          type: string
+        businessRegion:
+          type: string
+        comment:
+          type: string
+        roleList:
+          type: array
+          items:
+            type: string
+    RspWebInfo:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        id:
+          type: string
+        refNo:
+          type: string
+    TransactionPinRequest:
+      type: object
+      properties:
+        pin:
+          type: string
+        username:
+          type: string
+        entityCode:
+          type: string
+    PasswordResetRequest:
+      type: object
+      properties:
+        otp:
+          type: string
+        mobileNo:
+          type: string
+        username:
+          type: string
+        entityCode:
+          type: string
+        newPwd:
+          type: string
+    BaUserProfiles:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstname:
+          type: string
+        lastname:
+          type: string
+        address:
+          type: string
+        middlename:
+          type: string
+        email:
+          type: string
+        mobileNo:
+          type: string
+        dob:
           type: string
           format: date-time
         status:
           type: string
-          description: Order Status
-          enum:
-            - placed
-            - approved
-            - delivered
-        complete:
-          description: Indicates whenever order was completed or not
-          type: boolean
-          default: false
-          readOnly: true
-        requestId:
-          description: Unique Request Id
+        userRole:
           type: string
-          writeOnly: true
-      xml:
-        name: Order
-    Pet:
-      type: object
-      required:
-        - name
-        - photoUrls
-      discriminator:
-        propertyName: petType
-        mapping:
-          cat: '#/components/schemas/Cat'
-          dog: '#/components/schemas/Dog'
-          bee: '#/components/schemas/HoneyBee'
-      properties:
-        id:
-          externalDocs:
-            description: 'Find more info here'
-            url: 'https://example.com'
-          description: Pet ID
-          allOf:
-            - $ref: '#/components/schemas/Id'
-        category:
-          description: Categories this pet belongs to
-          allOf:
-            - $ref: '#/components/schemas/Category'
-        name:
-          description: The name given to a pet
+        lastLoginDate:
           type: string
-          example: Guru
-        photoUrls:
-          description: The list of URL to a cute photos featuring pet
-          type: array
-          maxItems: 20
-          xml:
-            name: photoUrl
-            wrapped: true
-          items:
-            type: string
-            format: url
-        friend:
-          allOf:
-            - $ref: '#/components/schemas/Pet'
-        tags:
-          description: Tags attached to the pet
-          type: array
-          minItems: 1
-          xml:
-            name: tag
-            wrapped: true
-          items:
-            $ref: '#/components/schemas/Tag'
-        status:
+          format: date-time
+        authStatus:
           type: string
-          description: Pet status in the store
-          enum:
-            - available
-            - pending
-            - sold
-        petType:
-          description: Type of a pet
+        entityCode:
           type: string
-      xml:
-        name: Pet
-    Tag:
-      type: object
-      properties:
-        id:
-          description: Tag ID
-          allOf:
-            - $ref: '#/components/schemas/Id'
-        name:
-          description: Tag name
-          type: string
-          minLength: 1
-      xml:
-        name: Tag
-    User:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/Id'
-        pet:
-          oneOf:
-            - $ref: '#/components/schemas/Pet'
-            - $ref: '#/components/schemas/Tag'
         username:
-          description: User supplied username
           type: string
-          minLength: 4
-          example: John78
-        firstName:
-          description: User first name
-          type: string
-          minLength: 1
-          example: John
-        lastName:
-          description: User last name
-          type: string
-          minLength: 1
-          example: Smith
-        email:
-          description: User email address
-          type: string
-          format: email
-          example: john.smith@example.com
         password:
           type: string
-          description: >-
-            User password, MUST contain a mix of upper and lower case letters,
-            as well as digits
-          format: password
-          minLength: 8
-          pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
-          example: drowssaP123
-        phone:
-          description: User phone number in international format
+        passCode:
           type: string
-          pattern: '/^\+(?:[0-9]-?){6,14}[0-9]$/'
-          example: +1-202-555-0192
-        userStatus:
-          description: User status
+        checkSum:
+          type: string
+        delFlg:
+          type: string
+        photoLink:
+          type: string
+        createdBy:
+          type: string
+        createdDate:
+          type: string
+          format: date-time
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        authToken:
+          type: string
+        deviceId:
+          type: string
+        authValidity:
+          type: string
+          format: date-time
+        geolocation:
+          type: string
+        socialMedia:
+          type: string
+        socialId:
+          type: string
+        branchCode:
+          type: string
+        identityType:
+          type: string
+        identityNo:
+          type: string
+        supervisor:
+          type: string
+        verifyStatus:
+          type: string
+        verifiedDate:
+          type: string
+          format: date-time
+        fullname:
+          type: string
+        loginAttempt:
           type: integer
           format: int32
-        addresses:
+        myReferralCode:
+          type: string
+        customerId:
+          type: string
+        gender:
+          type: string
+        userLang:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        forcePwdChange:
+          type: string
+        identityCardLink:
+          type: string
+        otherDocLink:
+          type: string
+        bvn:
+          type: string
+        softTokenLinked:
+          type: string
+        twofaDeviceSerialNo:
+          type: string
+        msgBroadcastCode:
+          type: string
+        state:
+          type: string
+        lga:
+          type: string
+        mobilePushId:
+          type: string
+        hardLimit:
+          type: number
+          format: double
+        residentialAddress:
+          type: string
+        otherAgentCode:
+          type: string
+        businessRegion:
+          type: string
+        verifyComment:
+          type: string
+        transactPin:
+          type: string
+    LoginUserRequest:
+      required:
+        - channelType
+        - password
+        - username
+      type: object
+      properties:
+        entityCode:
+          type: string
+        channelType:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        refreshToken:
+          type: string
+        language:
+          type: string
+        deviceId:
+          type: string
+    ModelResponse:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        data:
+          type: object
+    ChangePinRequest:
+      type: object
+      properties:
+        oldPin:
+          type: string
+        newPin:
+          type: string
+        entityCode:
+          type: string
+        deviceId:
+          type: string
+    TransferRequestDto:
+      required:
+        - amount
+        - beneficiaryAccount
+        - beneficiaryAccountType
+        - beneficiaryBankCode
+        - channelType
+        - currencyCode
+        - deviceId
+        - entityCode
+        - paymentMethod
+        - sourceAccount
+        - tranCode
+      type: object
+      properties:
+        externalRefNo:
+          maxLength: 100
+          minLength: 3
+          type: string
+          description: >-
+            Unique transaction reference no generated on Mobile, POS for each
+            transaction
+          example: '11001100110'
+        terminalId:
+          maxLength: 100
+          minLength: 0
+          type: string
+          description: POS Terminal Id assigned to agent
+          example: '00000011001100110'
+        deviceId:
+          maxLength: 100
+          minLength: 1
+          type: string
+          description: Device Id or Serial no of phone or POS
+          example: '00000011001100110'
+        sourceAccount:
+          maxLength: 50
+          minLength: 5
+          type: string
+          description: Agent Wallet account no
+          example: '11001100110'
+        tranCode:
+          maxLength: 20
+          minLength: 2
+          type: string
+          description: Transaction Code
+          example: IBFT,TOPUP,BILL
+        senderName:
+          type: string
+        beneficiaryAccount:
+          maxLength: 50
+          minLength: 3
+          type: string
+          description: Beneficiary account no
+          example: '11001100110'
+        beneficiaryName:
+          maxLength: 50
+          minLength: 2
+          type: string
+          description: Name of Beneficiary
+          example: '11001100110'
+        beneficiaryMobile:
+          type: string
+          description: Mobile no of benecifiary
+          example: '11001100110'
+        beneficiaryBankCode:
+          maxLength: 50
+          minLength: 3
+          type: string
+          description: >-
+            Destination Bank Code for transfer or Merchant or Biller Code for
+            bill payment
+          example: '300112'
+        beneficiaryAccountType:
+          maxLength: 50
+          minLength: 6
+          type: string
+          description: Type of Beneficiary account
+          example: ACCOUNT
+        entityCode:
+          type: string
+        geolocation:
+          maxLength: 100
+          minLength: 1
+          type: string
+          description: Geolocation - latitude,longitude
+          example: 0,0
+        amount:
+          type: number
+          description: Amount of transaction
+          example: 200
+        charge:
+          type: number
+        currencyCode:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: Currency Code
+          example: NGN
+        narration:
+          type: string
+          description: Payment note or comment or narration
+          example: pay me
+        paymentMethod:
+          maxLength: 12
+          minLength: 1
+          type: string
+          description: Method of payment- CASH, CARD
+          example: CASH
+        udfData:
+          $ref: '#/components/schemas/UdfData'
+        channelType:
+          maxLength: 50
+          minLength: 3
+          type: string
+          description: Source channel of the transaction - MOBILE, POS, WEB
+          example: MOBILE
+        network:
+          type: string
+        username:
+          type: string
+    UdfData:
+      type: object
+      properties:
+        fieldName:
+          type: string
+        fieldCode:
+          type: string
+        fieldValue:
+          type: string
+    ResponseChannelInfo:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        id:
+          type: string
+        refNo:
+          type: string
+        amount:
+          type: string
+    NameInquiryRequest:
+      required:
+        - accountNumber
+        - finEntityCode
+      type: object
+      properties:
+        finEntityCode:
+          type: string
+        finEntityType:
+          type: string
+        accountNumber:
+          type: string
+        accountType:
+          type: string
+        provider:
+          type: string
+    NameInquiryResponse:
+      type: object
+      properties:
+        accountNumber:
+          type: string
+        name:
+          type: string
+        currencyCode:
+          type: string
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+    UpdateStoreRequest:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        storeType:
+          type: string
+        contactPhone:
+          type: string
+        contactEmail:
+          type: string
+        managerUsername:
+          type: string
+        merchantCode:
+          type: string
+        address:
+          type: string
+        description:
+          type: string
+        staffEmails:
           type: array
-          minItems: 0
-          maxLength: 10
           items:
-            - type: object
-              properties:
-                city:
-                  type: string
-                  minLength: 0
-                country:
-                  type: string
-                  minLength: 0
-                street:
-                  description: includes build/apartment number
-                  type: string
-                  minLength: 0
-            - type: number
-          additionalItems:
             type: string
-      xml:
-        name: User
-  requestBodies:
-    Pet:
-      content:
-        application/json:
-          schema:
-            allOf:
-              - description: My Pet
-                title: Pettie
-              - $ref: '#/components/schemas/Pet'
-        application/xml:
-          schema:
-            type: 'object'
-            properties:
-              name:
-                type: string
-                description: hooray
-      description: Pet object that needs to be added to the store
-      required: true
-    UserArray:
-      content:
-        application/json:
-          schema:
+    UpdateStoreResponse:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        code:
+          type: string
+        name:
+          type: string
+        storeType:
+          type: string
+        contactPhone:
+          type: string
+        contactEmail:
+          type: string
+        managerUsername:
+          type: string
+        merchantCode:
+          type: string
+        entityCode:
+          type: string
+        status:
+          type: string
+        address:
+          type: string
+        description:
+          type: string
+        isDeleted:
+          type: boolean
+        staffEmails:
+          type: array
+          items:
+            type: string
+    SearchQueryRequest:
+      type: object
+      properties:
+        searchTerm:
+          type: string
+    GetStoreResponse:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        code:
+          type: string
+        name:
+          type: string
+        storeType:
+          type: string
+        contactPhone:
+          type: string
+        contactEmail:
+          type: string
+        managerUsername:
+          type: string
+        merchantCode:
+          type: string
+        entityCode:
+          type: string
+        status:
+          type: string
+        isDeleted:
+          type: boolean
+        address:
+          type: string
+        description:
+          type: string
+        staffEmails:
+          type: array
+          items:
+            type: string
+    ListStoreResponse:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetStoreResponse'
+    CreateStoreRequest:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        storeType:
+          type: string
+        contactPhone:
+          type: string
+        contactEmail:
+          type: string
+        managerUsername:
+          type: string
+        merchantCode:
+          type: string
+        address:
+          type: string
+        description:
+          type: string
+        staffEmails:
+          type: array
+          items:
+            type: string
+    UpdateProductCategoryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        categoryCode:
+          type: string
+        categoryType:
+          type: string
+        sector:
+          type: string
+        logoUrl:
+          type: string
+        merchantCode:
+          type: string
+        description:
+          type: string
+    CreateProductCategoryResponse:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        categoryCode:
+          type: string
+        categoryType:
+          type: string
+        sector:
+          type: string
+        logoUrl:
+          type: string
+        merchantCode:
+          type: string
+        entityCode:
+          type: string
+        isDeleted:
+          type: boolean
+        description:
+          type: string
+    ListProductCategoryResponse:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCategory'
+    ProductCategory:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        categoryCode:
+          type: string
+        categoryType:
+          type: string
+        sector:
+          type: string
+        logoUrl:
+          type: string
+        merchantCode:
+          type: string
+        entityCode:
+          type: string
+        isDeleted:
+          type: boolean
+        description:
+          type: string
+    CreateProductCategoryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        categoryCode:
+          type: string
+        categoryType:
+          type: string
+        sector:
+          type: string
+        logoUrl:
+          type: string
+        merchantCode:
+          type: string
+        description:
+          type: string
+    BaParamRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        paramCode:
+          type: string
+        paramValue:
+          type: string
+        paramDesc:
+          type: string
+        entityCode:
+          type: string
+        accessLevel:
+          type: string
+    BaOtpRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        entityCode:
+          type: string
+        referenceNo:
+          type: string
+        mobileNo:
+          type: string
+        tranType:
+          type: string
+        otp:
+          type: string
+        createdDate:
+          type: string
+          format: date-time
+        expiryDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        status:
+          type: string
+        amount:
+          type: number
+          format: double
+    SearchSaleOrdersRequest:
+      type: object
+      properties:
+        merchantCode:
+          type: string
+        orderNumber:
+          type: string
+        orderShortRef:
+          type: string
+        storeCode:
+          type: string
+        customerId:
+          type: string
+        paymentStatus:
+          type: string
+        deviceId:
+          type: string
+        terminalId:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        status:
+          type: string
+        pageIndex:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+    SaleOrderItems:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        orderNumber:
+          type: string
+        serialNo:
+          type: string
+        productCode:
+          type: string
+        productName:
+          type: string
+        quantity:
+          type: integer
+          format: int64
+        unitAmount:
+          type: number
+        discount:
+          type: number
+        totalTax:
+          type: number
+        barcode:
+          type: string
+    SaleOrders:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        orderNumber:
+          type: string
+        orderShortRef:
+          type: string
+        totalQuantity:
+          type: integer
+          format: int64
+        totalAmount:
+          type: number
+        direction:
+          type: string
+        entityCode:
+          type: string
+        merchantCode:
+          type: string
+        storeCode:
+          type: string
+        paymentMethod:
+          type: string
+        currencyCode:
+          type: string
+        customerId:
+          type: string
+        customerName:
+          type: string
+        paymentStatus:
+          type: string
+        soldBy:
+          type: string
+        discount:
+          type: number
+        discountRef:
+          type: string
+        totalTax:
+          type: string
+        taxAmount1:
+          type: number
+        taxAmount2:
+          type: number
+        taxAmount3:
+          type: number
+        amountOwed:
+          type: number
+        subTotal:
+          type: string
+        transactionReference:
+          type: string
+        orderChannel:
+          type: string
+        deviceId:
+          type: string
+        terminalId:
+          type: string
+        geolocation:
+          type: string
+        status:
+          type: string
+        remarks:
+          type: string
+        verifiedDate:
+          type: string
+        verifiedBy:
+          type: string
+        verifiedStatus:
+          type: string
+        orderCancelled:
+          type: boolean
+        maskedCardNumber:
+          type: string
+        cardHolderName:
+          type: string
+        stan:
+          type: string
+        authCode:
+          type: string
+        responseCode:
+          type: string
+        responseDescription:
+          type: string
+        retrievalRefNumber:
+          type: string
+        cardScheme:
+          type: string
+        applicationVersion:
+          type: string
+        virtualAccountBankName:
+          type: string
+        virtualAccountNumber:
+          type: string
+        virtualAccountName:
+          type: string
+    SaleOrdersResponse:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/SaleOrders'
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/SaleOrderItems'
+    SearchSaleOrdersResponse:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SaleOrdersResponse'
+        pageIndex:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        hasNextPage:
+          type: boolean
+        hasPreviousPage:
+          type: boolean
+        totalContent:
+          type: integer
+          format: int64
+    CheckoutItems:
+      type: object
+      properties:
+        productCode:
+          type: string
+        quantity:
+          type: integer
+          format: int64
+        unitAmount:
+          type: number
+        discount:
+          type: number
+        totalTax:
+          type: number
+    CreateSaleOrdersRequest:
+      type: object
+      properties:
+        orderNumber:
+          type: string
+        orderShortRef:
+          type: string
+        merchantCode:
+          type: string
+        storeCode:
+          type: string
+        paymentMethod:
+          type: string
+        currencyCode:
+          type: string
+        customerId:
+          type: string
+        customerName:
+          type: string
+        paymentStatus:
+          type: string
+        soldBy:
+          type: string
+        discount:
+          type: number
+        totalAmount:
+          type: number
+        discountRef:
+          type: string
+        totalTax:
+          type: string
+        subTotal:
+          type: string
+        transactionReference:
+          type: string
+        orderChannel:
+          type: string
+        deviceId:
+          type: string
+        terminalId:
+          type: string
+        geolocation:
+          type: string
+        remarks:
+          type: string
+        maskedCardNumber:
+          type: string
+        cardHolderName:
+          type: string
+        stan:
+          type: string
+        authCode:
+          type: string
+        responseCode:
+          type: string
+        responseDescription:
+          type: string
+        retrievalRefNumber:
+          type: string
+        cardScheme:
+          type: string
+        applicationVersion:
+          type: string
+        virtualAccountBankName:
+          type: string
+        virtualAccountNumber:
+          type: string
+        virtualAccountName:
+          type: string
+        checkoutItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckoutItems'
+    AddressDto:
+      type: object
+      properties:
+        houseNo:
+          type: string
+        street:
+          type: string
+        area:
+          type: string
+        state:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        longitude:
+          type: number
+          format: double
+        latitude:
+          type: number
+          format: double
+    BusinessDetailDto:
+      type: object
+      properties:
+        businessType:
+          type: string
+        registrationNo:
+          type: string
+        businessRegistered:
+          type: string
+        businessRegistrationLink:
+          type: string
+        phoneNo:
+          type: string
+        taxNo:
+          type: string
+        mobileNo:
+          type: string
+    IdentificationDto:
+      type: object
+      properties:
+        identityType:
+          type: string
+        identityNo:
+          type: string
+        identityIssueDate:
+          type: string
+        identityExpiryDate:
+          type: string
+        issuingAuthority:
+          type: string
+        identityLink:
+          type: string
+    MetaInfo:
+      type: object
+      properties:
+        os:
+          type: string
+        ip:
+          type: string
+        platform:
+          type: string
+        deviceId:
+          type: string
+        terminalId:
+          type: string
+        geolocation:
+          type: string
+        locationName:
+          type: string
+    OnboardingCustomerDto:
+      required:
+        - customerType
+        - onboardingId
+        - username
+      type: object
+      properties:
+        personalDetailDto:
+          $ref: '#/components/schemas/PersonalDetailDto'
+        businessDetailDto:
+          $ref: '#/components/schemas/BusinessDetailDto'
+        addressDto:
+          $ref: '#/components/schemas/AddressDto'
+        identificationDto:
+          $ref: '#/components/schemas/IdentificationDto'
+        onboardingId:
+          maxLength: 50
+          minLength: 20
+          type: string
+        customerType:
+          type: string
+        name:
+          type: string
+        password:
+          type: string
+        transactPin:
+          type: string
+        referralCode:
+          type: string
+        bvn:
+          type: string
+        language:
+          type: string
+        username:
+          maxLength: 30
+          minLength: 3
+          type: string
+        accept_t_and_c:
+          type: boolean
+        country_code:
+          type: string
+        meta:
+          $ref: '#/components/schemas/MetaInfo'
+        signature:
+          type: string
+        idCard:
+          type: string
+    PersonalDetailDto:
+      required:
+        - firstname
+      type: object
+      properties:
+        firstname:
+          maxLength: 50
+          minLength: 1
+          type: string
+        lastname:
+          type: string
+        middleName:
+          type: string
+        mobileNo:
+          type: string
+        email:
+          type: string
+        dateOfBirth:
+          type: string
+        gender:
+          type: string
+        photoLink:
+          type: string
+        employmentStatus:
+          type: string
+        occupation:
+          type: string
+        bvn:
+          type: string
+    LoginInfo:
+      type: object
+      properties:
+        username:
+          type: string
+        userID:
+          type: string
+        pwd:
+          type: string
+        userRole:
+          type: string
+        entityCode:
+          type: string
+        entityName:
+          type: string
+        entityLogo:
+          type: string
+        entityStyle:
+          type: string
+        language:
+          type: string
+        entityType:
+          type: string
+        retryNo:
+          type: integer
+          format: int32
+        ticketID:
+          type: string
+        medium:
+          type: string
+        deviceID:
+          type: string
+        responseMessage:
+          type: string
+        responseCode:
+          type: string
+        fullname:
+          type: string
+        email:
+          type: string
+        mobileNo:
+          type: string
+        lastLoginDate:
+          type: string
+        photoLinks:
+          type: string
+        firstname:
+          type: string
+        branchName:
+          type: string
+        branchID:
+          type: string
+        ccy:
+          type: string
+        country:
+          type: string
+        supervisor:
+          type: string
+        expiryDate:
+          type: string
+        terminalId:
+          type: string
+        forcePwdChange:
+          type: string
+        address:
+          type: string
+        userPermissionList:
+          type: array
+          items:
+            $ref: '#/components/schemas/LookupDataInfo'
+        refreshToken:
+          type: string
+    LookupDataInfo:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        otherInfo:
+          type: string
+        provider:
+          type: string
+    OnboardingValidationDto:
+      type: object
+      properties:
+        mobileNo:
+          type: string
+        countryCode:
+          type: string
+        email:
+          type: string
+        entityCode:
+          type: string
+        dateOfBirth:
+          type: string
+        nationality:
+          type: string
+        phoneCode:
+          type: string
+        username:
+          type: string
+    EmailDto:
+      type: object
+      properties:
+        to:
+          type: array
+          items:
+            type: string
+        cc:
+          type: array
+          items:
+            type: string
+        from:
+          type: string
+        replyTo:
+          type: array
+          items:
+            type: string
+        subject:
+          type: string
+        body:
+          type: string
+        attachments:
+          type: object
+          additionalProperties:
             type: array
             items:
-              $ref: '#/components/schemas/User'
-      description: List of user object
-      required: true
-  securitySchemes:
-    Rex MFBank_auth:
-      description: |
-        Get access to data while protecting your account credentials.
-        OAuth2 is also a safer and more secure way to give you access.
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: 'http://Rex MFBank.swagger.io/api/oauth/dialog'
-          scopes:
-            'write:pets': modify pets in your account
-            'read:pets': read your pets
-    api_key:
-      description: >
-        For this sample, you can use the api key `special-key` to test the
-        authorization filters.
-      type: apiKey
-      name: api_key
-      in: header
-  examples:
-    Order:
-      value:
-        quantity: 1
-        shipDate: '2018-10-19T16:46:45Z'
-        status: placed
-        complete: false
-x-webhooks:
-  newPet:
-    post:
-      summary: New pet
-      description: Information about a new pet in the systems
-      operationId: newPet
-      tags:
-        - pet
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Pet'
-      responses:
-        '200':
-          description: Return a 200 status to indicate that the data was received successfully
+              type: string
+              format: byte
+        filePaths:
+          type: array
+          items:
+            type: string
+        html:
+          type: boolean
+        senderName:
+          type: string
+    MessageTemplateDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        msgType:
+          type: string
+        templateCode:
+          type: string
+        title:
+          type: string
+        entityCode:
+          type: string
+        templateMsg:
+          type: string
+    ResponseInfo:
+      type: object
+      properties:
+        code:
+          type: string
+        desc:
+          type: string
+        id:
+          type: string
+        refNo:
+          type: string
+        extraDetails:
+          type: string
+        data:
+          type: object
+        amount:
+          type: string
+    UpdateMerchantProductRequest:
+      type: object
+      properties:
+        merchantCode:
+          type: string
+        storeCode:
+          type: string
+        categoryCode:
+          type: string
+        productCode:
+          type: string
+        name:
+          type: string
+        subTitle:
+          type: string
+        unit:
+          type: string
+        costPrice:
+          type: number
+        salePrice:
+          type: number
+        discount:
+          type: number
+        discountRef:
+          type: string
+        stockQuantity:
+          type: integer
+          format: int32
+        stockTrackingEnabled:
+          type: boolean
+        actionOnLowStock:
+          type: string
+        minimumStock:
+          type: integer
+          format: int32
+        reorderLevel:
+          type: integer
+          format: int32
+        imageUrls:
+          type: array
+          items:
+            type: string
+        canExpire:
+          type: boolean
+        barcode:
+          type: string
+        brand:
+          type: string
+        model:
+          type: string
+        unitFormula:
+          type: string
+        productSize:
+          type: string
+        productModel:
+          type: string
+        productYear:
+          type: integer
+          format: int32
+        productTag:
+          type: string
+        description:
+          type: string
+    UpdateMerchantProductResponse:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        entityCode:
+          type: string
+        merchantCode:
+          type: string
+        storeCode:
+          type: string
+        categoryCode:
+          type: string
+        productCode:
+          type: string
+        name:
+          type: string
+        subTitle:
+          type: string
+        unit:
+          type: string
+        costPrice:
+          type: number
+        salePrice:
+          type: number
+        discount:
+          type: number
+        discountRef:
+          type: string
+        stockQuantity:
+          type: integer
+          format: int32
+        stockTrackingEnabled:
+          type: boolean
+        actionOnLowStock:
+          type: string
+        minimumStock:
+          type: integer
+          format: int32
+        reorderLevel:
+          type: integer
+          format: int32
+        status:
+          type: string
+        imageUrls:
+          type: array
+          items:
+            type: string
+        canExpire:
+          type: boolean
+        barcode:
+          type: string
+        brand:
+          type: string
+        model:
+          type: string
+        unitFormula:
+          type: string
+        isDeleted:
+          type: boolean
+        productSize:
+          type: string
+        productModel:
+          type: string
+        productYear:
+          type: integer
+          format: int32
+        productTag:
+          type: string
+        description:
+          type: string
+    GetMerchantProductResponse:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        entityCode:
+          type: string
+        merchantCode:
+          type: string
+        storeCode:
+          type: string
+        categoryCode:
+          type: string
+        productCode:
+          type: string
+        name:
+          type: string
+        subTitle:
+          type: string
+        unit:
+          type: string
+        costPrice:
+          type: number
+        salePrice:
+          type: number
+        discount:
+          type: number
+        discountRef:
+          type: string
+        stockQuantity:
+          type: integer
+          format: int32
+        stockTrackingEnabled:
+          type: boolean
+        actionOnLowStock:
+          type: string
+        minimumStock:
+          type: integer
+          format: int32
+        reorderLevel:
+          type: integer
+          format: int32
+        imageUrls:
+          type: array
+          items:
+            type: string
+        canExpire:
+          type: boolean
+        barcode:
+          type: string
+        brand:
+          type: string
+        model:
+          type: string
+        unitFormula:
+          type: string
+        isDeleted:
+          type: boolean
+        productSize:
+          type: string
+        productModel:
+          type: string
+        productYear:
+          type: integer
+          format: int32
+        productTag:
+          type: string
+        description:
+          type: string
+    ListMerchantProductResponse:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetMerchantProductResponse'
+    FilterMerchantProductRequest:
+      type: object
+      properties:
+        merchantCode:
+          type: string
+        categoryCode:
+          type: string
+        productCode:
+          type: string
+        barcode:
+          type: string
+        name:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        pageIndex:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+    FilterMerchantProductResponse:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetMerchantProductResponse'
+        pageIndex:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        hasNextPage:
+          type: boolean
+        hasPreviousPage:
+          type: boolean
+        totalContent:
+          type: integer
+          format: int64
+    CreateMerchantProductRequest:
+      type: object
+      properties:
+        merchantCode:
+          type: string
+        storeCode:
+          type: string
+        categoryCode:
+          type: string
+        productCode:
+          type: string
+        name:
+          type: string
+        subTitle:
+          type: string
+        unit:
+          type: string
+        costPrice:
+          type: number
+        salePrice:
+          type: number
+        discount:
+          type: number
+        discountRef:
+          type: string
+        stockQuantity:
+          type: integer
+          format: int32
+        stockTrackingEnabled:
+          type: boolean
+        actionOnLowStock:
+          type: string
+        minimumStock:
+          type: integer
+          format: int32
+        reorderLevel:
+          type: integer
+          format: int32
+        imageUrls:
+          type: array
+          items:
+            type: string
+        canExpire:
+          type: boolean
+        barcode:
+          type: string
+        brand:
+          type: string
+        model:
+          type: string
+        unitFormula:
+          type: string
+        productSize:
+          type: string
+        productModel:
+          type: string
+        productYear:
+          type: integer
+          format: int32
+        productTag:
+          type: string
+        description:
+          type: string
+    CreateMerchantProductResponse:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        entityCode:
+          type: string
+        merchantCode:
+          type: string
+        storeCode:
+          type: string
+        categoryCode:
+          type: string
+        productCode:
+          type: string
+        name:
+          type: string
+        subTitle:
+          type: string
+        unit:
+          type: string
+        costPrice:
+          type: number
+        salePrice:
+          type: number
+        discount:
+          type: number
+        discountRef:
+          type: string
+        stockQuantity:
+          type: integer
+          format: int32
+        stockTrackingEnabled:
+          type: boolean
+        actionOnLowStock:
+          type: string
+        minimumStock:
+          type: integer
+          format: int32
+        reorderLevel:
+          type: integer
+          format: int32
+        status:
+          type: string
+        imageUrls:
+          type: array
+          items:
+            type: string
+        canExpire:
+          type: boolean
+        barcode:
+          type: string
+        brand:
+          type: string
+        model:
+          type: string
+        unitFormula:
+          type: string
+        isDeleted:
+          type: boolean
+        productSize:
+          type: string
+        productModel:
+          type: string
+        productYear:
+          type: integer
+          format: int32
+        productTag:
+          type: string
+        description:
+          type: string
+    UpdateMasterProductRequest:
+      type: object
+      properties:
+        merchantCode:
+          type: string
+        categoryCode:
+          type: string
+        productCode:
+          type: string
+        name:
+          type: string
+        productPicture:
+          type: string
+        description:
+          type: string
+    UpdateMasterProductResponse:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        categoryCode:
+          type: string
+        productCode:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        productPicture:
+          type: string
+        description:
+          type: string
+        isDeleted:
+          type: boolean
+    CreateMasterProductRequest:
+      type: object
+      properties:
+        merchantCode:
+          type: string
+        categoryCode:
+          type: string
+        productCode:
+          type: string
+        name:
+          type: string
+        productPicture:
+          type: string
+        description:
+          type: string
+    CreateMasterProductResponse:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        merchantCode:
+          type: string
+        categoryCode:
+          type: string
+        productCode:
+          type: string
+        name:
+          type: string
+        productPicture:
+          type: string
+        description:
+          type: string
+    BaMakerCheckerLogRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        entityCode:
+          type: string
+        activityCode:
+          type: string
+        activityRef:
+          type: string
+        domainType:
+          type: string
+        oldData:
+          type: string
+        newData:
+          type: string
+        createdBy:
+          type: string
+        createdDate:
+          type: string
+        verifyStatus:
+          type: string
+        verifyDate:
+          type: string
+        verifyBy:
+          type: string
+        activityTitle:
+          type: string
+        activityValue:
+          type: string
+        comment:
+          type: string
+    VerifyActionDto:
+      required:
+        - id
+        - referenceNo
+        - requestType
+        - verifyStatus
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of record
+          format: int64
+          example: 1
+        referenceNo:
+          type: string
+          description: Username, transaction ref no or other ref
+          example: '000000000'
+        requestType:
+          type: string
+          description: Type of entity - USER, TRANSACTION
+          example: USER
+        verifyStatus:
+          type: string
+          description: Y-Approved, R-Reject, N-Nothing
+          example: Y,R,N
+        comment:
+          type: string
+    BaMakerCheckerLogInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        entityCode:
+          type: string
+        activityCode:
+          type: string
+        activityRef:
+          type: string
+        domainType:
+          type: string
+        oldData:
+          type: string
+        newData:
+          type: string
+        verifyStatus:
+          type: string
+        verifyDate:
+          type: string
+        verifyBy:
+          type: string
+        activityTitle:
+          type: string
+        activityValue:
+          type: string
+        comment:
+          type: string
+        createdDate:
+          type: string
+        createdBy:
+          type: string
+    BaLookUpDataRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        categoryCode:
+          type: string
+        lookupCode:
+          type: string
+        lookupName:
+          type: string
+        lookupDesc:
+          type: string
+        usageAccess:
+          type: string
+        status:
+          type: string
+        entityCode:
+          type: string
+        countryCode:
+          type: string
+    DocumentRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        entityCode:
+          type: string
+        username:
+          type: string
+        documentType:
+          type: string
+        documentName:
+          type: string
+        documentPath:
+          type: string
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        accountNo:
+          type: string
+        documentTitle:
+          type: string
+    CardLimitDto:
+      type: object
+      properties:
+        limitType:
+          type: string
+        maxLimit:
+          type: number
+    CardLimitRequestDto:
+      type: object
+      properties:
+        cardId:
+          type: string
+        cardLimitDtoList:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardLimitDto'
+    CardLimitResponseDto:
+      type: object
+      properties:
+        cardId:
+          type: string
+        posLimit:
+          type: string
+        webLimit:
+          type: string
+        atmLimit:
+          type: string
+        contactlessLimit:
+          type: string
+    CardControl:
+      type: object
+      properties:
+        controlType:
+          type: string
+        value:
+          type: string
+    CardControlRequestDto:
+      type: object
+      properties:
+        cardId:
+          type: string
+        cardControls:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardControl'
+    CardUnLockRequest:
+      type: object
+      properties:
+        cardId:
+          type: string
+        action:
+          type: string
+    CardResponseDto:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        id:
+          type: string
+        refNo:
+          type: string
+        amount:
+          type: string
+    CardCreationRequest:
+      type: object
+      properties:
+        externalRefNo:
+          type: string
+        cardProductCode:
+          type: string
+        clientCode:
+          type: string
+        walletInfo:
+          $ref: '#/components/schemas/WalletInfo'
+        cardholderInfo:
+          $ref: '#/components/schemas/CardholderInfo'
+    CardholderInfo:
+      required:
+        - mobileNo
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        gender:
+          type: string
+        title:
+          type: string
+        email:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+        mobileNo:
+          type: string
+        address1:
+          type: string
+        address2:
+          type: string
+        zipCode:
+          type: string
+        birthDate:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+    WalletInfo:
+      type: object
+      properties:
+        currencyCode:
+          type: string
+        clientId:
+          type: string
+        branchCode:
+          type: string
+        merchantCode:
+          type: string
+        storeCode:
+          type: string
+        walletAccountType:
+          type: string
+        ownerUsername:
+          type: string
+        terminalId:
+          type: string
+        businessRegNo:
+          type: string
+        deviceId:
+          type: string
+        bankCode:
+          type: string
+        bvn:
+          type: string
+        walletName:
+          type: string
+        walletCategory:
+          type: string
+    CardCreationResponse:
+      type: object
+      properties:
+        cardTokenRef:
+          type: string
+        cardId:
+          type: string
+        virtualAccountNo:
+          type: string
+        virtualAccountName:
+          type: string
+        accountId:
+          type: string
+        maskedPan:
+          type: string
+        pan:
+          type: string
+        expiryDate:
+          type: string
+    ReplaceCardRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+        cardTokenRef:
+          type: string
+        externalRefNo:
+          type: string
+    PinResetRequestDto:
+      type: object
+      properties:
+        cardTokenRef:
+          type: string
+        newPin:
+          type: string
+    PinResetResponseDto:
+      type: object
+    CardLockRequest:
+      type: object
+      properties:
+        cardId:
+          type: string
+        action:
+          type: string
+    CardMiniTranRequest:
+      type: object
+      properties:
+        cardId:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        noOfTrans:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+    ChangePinRequestDto:
+      type: object
+      properties:
+        cardTokenRef:
+          type: string
+        oldPin:
+          type: string
+        newPin:
+          type: string
+    ChangePinResponseDto:
+      type: object
+    CardStatusRequestDto:
+      type: object
+      properties:
+        externalRefNo:
+          type: string
+    CardStatusResponseDto:
+      type: object
+      properties:
+        cardId:
+          type: string
+        cardProductCode:
+          type: string
+        nameOnCard:
+          type: string
+        cardExpiryDate:
+          type: string
+        cardNumber:
+          type: string
+        maskedCardNumber:
+          type: string
+        cardRef:
+          type: string
+        accountNo:
+          type: string
+        accountType:
+          type: string
+        accountId:
+          type: string
+    CreateSupplementaryCardRequest:
+      type: object
+      properties:
+        primaryCustomerId:
+          type: string
+        primaryCardTokenRef:
+          type: string
+        externalRefNo:
+          type: string
+        nameOnCard:
+          type: string
+        cardholderInfo:
+          $ref: '#/components/schemas/CardholderInfo'
+    CreateWalletAccountRequestDto:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        uniqueAccountRef:
+          type: string
+        walletAccount:
+          type: string
+        address:
+          type: string
+        canCreateVirtualAccount:
+          type: string
+        countryCode:
+          type: string
+        currencyCode:
+          type: string
+        lga:
+          type: string
+        state:
+          type: string
+        dob:
+          type: string
+        clientId:
+          type: string
+        branchCode:
+          type: string
+        mobileNo:
+          type: string
+        merchantCode:
+          type: string
+        storeCode:
+          type: string
+        walletAccountType:
+          type: string
+        ownerUsername:
+          type: string
+        terminalId:
+          type: string
+        businessRegNo:
+          type: string
+        deviceId:
+          type: string
+        bankCode:
+          type: string
+        bvn:
+          type: string
+        walletName:
+          type: string
+        walletCategory:
+          type: string
+    UnlinkAccountRequestDto:
+      type: object
+      properties:
+        cardId:
+          type: string
+    UnlinkAccountResponseDto:
+      type: object
+      properties:
+        accountType:
+          type: string
+        accountNumber:
+          type: string
+    CreateSavingAccountRequestDto:
+      type: object
+      properties:
+        phone:
+          type: string
+        email:
+          type: string
+        gender:
+          type: string
+        bvn:
+          type: string
+        bankCode:
+          type: string
+        address:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        date_of_birth:
+          type: string
+        account_reference:
+          type: string
+        passport_photo:
+          type: string
+    CardAccountCreationRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        middleName:
+          type: string
+        gender:
+          type: string
+        title:
+          type: string
+        email:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+        mobileNo:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        address1:
+          type: string
+        address2:
+          type: string
+        zipCode:
+          type: string
+        birthDate:
+          type: string
+        cardProductCode:
+          type: string
+        clientCode:
+          type: string
+        externalRefNo:
+          type: string
+        bankCode:
+          type: string
+        accountNo:
+          type: string
+    EntitiesRequest:
+      type: object
+      properties:
+        entityCode:
+          type: string
+        entityName:
+          type: string
+        entityType:
+          type: string
+        shortName:
+          type: string
+        currencyCode:
+          type: string
+        country:
+          type: string
+        logo:
+          type: string
+        website:
+          type: string
+        email:
+          type: string
+        contactPhone:
+          type: string
+        primaryColor:
+          type: string
+        secondaryColor:
+          type: string
+        status:
+          type: string
+        language:
+          type: string
+        parentEntity:
+          type: string
+        category:
+          type: string
+        baseLink:
+          type: string
+        createdBy:
+          type: string
+        virtualBankCode:
+          type: string
+        settlementBankCode:
+          type: string
+        settlementBank:
+          type: string
+        settlementBankAccount:
+          type: string
+        ftProvider:
+          type: string
+        billerProvider:
+          type: string
+        timeZoneNo:
+          type: number
+          format: double
+        timeZone:
+          type: string
+    EntitiesInfoResponse:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        entityCode:
+          type: string
+    ChangeMoblieNoRequest:
+      type: object
+      properties:
+        customerID:
+          type: string
+        mobileNo:
+          type: string
+    ChangeEmailRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        customerID:
+          type: string
+    AddDocumentRequest:
+      type: object
+      properties:
+        customerID:
+          type: string
+        document:
+          type: string
+    AccountRequest:
+      type: object
+      properties:
+        entityCode:
+          type: string
+        clientCode:
+          type: string
+        businessCode:
+          type: string
+        customerId:
+          type: string
+        accountType:
+          type: string
+        bankCode:
+          type: string
+        accountNumber:
+          type: string
+        accountName:
+          type: string
+        addressDto:
+          $ref: '#/components/schemas/AddressDto'
+        ccy:
+          type: string
+        status:
+          type: string
+        createdBy:
+          type: string
+        createdDate:
+          type: string
+          format: date-time
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        openDate:
+          type: string
+          format: date-time
+        currentBalance:
+          type: number
+        availableBalance:
+          type: number
+        blockedAmount:
+          type: number
+        openBalance:
+          type: number
+        branchCode:
+          type: string
+        lastUpdateDate:
+          type: string
+          format: date-time
+        email:
+          type: string
+        mobileNo:
+          type: string
+        accountOwnerId:
+          type: string
+        authStatus:
+          type: string
+        authorizer:
+          type: string
+        auth_date:
+          type: string
+          format: date-time
+        device_id:
+          type: string
+        terminalId:
+          type: string
+        externalAccountRef:
+          type: string
+        supportDoc1:
+          type: string
+        supportDoc2:
+          type: string
+        identityType:
+          type: string
+        identityNo:
+          type: string
+        businessRegNo:
+          type: string
+        customerCategory:
+          type: string
+        bankPos:
+          type: string
+        referralCode:
+          type: string
+        saveComm:
+          type: string
+        unearnCommision:
+          type: number
+        bvn:
+          type: string
+        smsEnabled:
+          type: string
+        pnd:
+          type: string
+        pnc:
+          type: string
+        introducer:
+          type: string
+        accountOfficer:
+          type: string
+        delFig:
+          type: string
+        businessRegion:
+          type: string
+        walletToken:
+          type: string
+        linkAccountName:
+          type: string
+        linkBankAccountNo:
+          type: string
+        linkBankName:
+          type: string
+        linkBankCode:
+          type: string
+        merchantCode:
+          type: string
+        storeCode:
+          type: string
+        merchantGroupCode:
+          type: string
+        personalDetailDto:
+          $ref: '#/components/schemas/PersonalDetailDto'
+    AddPhotoRequest:
+      type: object
+      properties:
+        customerID:
+          type: string
+        photolink:
+          type: string
+    AddBvnRequest:
+      type: object
+      properties:
+        customerID:
+          type: string
+        bvn:
+          type: string
+    JwtRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        sourceCode:
+          type: string
+    BaAccessKeysRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        clientId:
+          type: string
+        sourceCode:
+          type: string
+        secretKey:
+          type: string
+        publicKey:
+          type: string
+        entityCodeAllowed:
+          type: string
+        serviceAllowed:
+          type: string
+        ipAddress:
+          type: string
+        enableIpCheck:
+          type: string
+        apiKey:
+          type: string
+        callBackUrl:
+          type: string
+        notificationUrl:
+          type: string
+        countryCode:
+          type: string
+        parentCode:
+          type: string
+        status:
+          type: string
+        entityCode:
+          type: string
+        bankAccount:
+          type: string
+        bankCode:
+          type: string
+        walletAccNo:
+          type: string
+        baseURL:
+          type: string
+    OpenAccountRequest:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        date_of_birth:
+          type: string
+        gender:
+          type: string
+        bvn:
+          type: string
+        account_reference:
+          type: string
+        address:
+          type: string
+    SLSDebitCreditRequest:
+      type: object
+      properties:
+        account_no:
+          type: string
+        amount:
+          type: number
+          format: double
+        tx_ref:
+          type: string
+        narration:
+          type: string
+        tx_type:
+          type: string
+    NIPInterBankTransferRequest:
+      type: object
+      properties:
+        name_enquiry_ref:
+          type: string
+        amount:
+          type: string
+        payment_ref:
+          type: string
+        narration:
+          type: string
+        originator_account_no:
+          type: string
+        accountNo:
+          type: string
+        bankId:
+          type: string
+    GetProductCategoryResponse:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        categoryCode:
+          type: string
+        categoryType:
+          type: string
+        sector:
+          type: string
+        logoUrl:
+          type: string
+        merchantCode:
+          type: string
+        entityCode:
+          type: string
+        isDeleted:
+          type: boolean
+        description:
+          type: string
+    BaParamInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        paramCode:
+          type: string
+        paramValue:
+          type: string
+        paramDesc:
+          type: string
+        entityCode:
+          type: string
+        accessLevel:
+          type: string
+    BaOtpInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        entityCode:
+          type: string
+        referenceNo:
+          type: string
+        mobileNo:
+          type: string
+        tranType:
+          type: string
+        otp:
+          type: string
+        expiryDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+        amount:
+          type: number
+          format: double
+    GetMasterProductResponse:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        categoryCode:
+          type: string
+        productCode:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        productPicture:
+          type: string
+        description:
+          type: string
+        isDeleted:
+          type: boolean
+    ListMasterProductResponse:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MasterProduct'
+    MasterProduct:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        modifiedDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        categoryCode:
+          type: string
+        productCode:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        productPicture:
+          type: string
+        description:
+          type: string
+        isDeleted:
+          type: boolean
+    LookupDataList:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/LookupDataInfo'
+    DocumentInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        entityCode:
+          type: string
+        username:
+          type: string
+        documentType:
+          type: string
+        documentName:
+          type: string
+        documentPath:
+          type: string
+        accountNo:
+          type: string
+        documentTitle:
+          type: string
+        verifiedStatus:
+          type: string
+        verifiedBy:
+          type: string
+        comment:
+          type: string
+        documentImg:
+          type: string
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
+    BaBanksInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        bankName:
+          type: string
+        bankCode:
+          type: string
+        bankInstantCode:
+          type: string
+        bankAchCode:
+          type: string
+        countryCode:
+          type: string
+        status:
+          type: string
+        bankLogo:
+          type: string
+    EntitiesInfo:
+      type: object
+      properties:
+        entityCode:
+          type: string
+        entityName:
+          type: string
+        entityType:
+          type: string
+        shortName:
+          type: string
+        currencyCode:
+          type: string
+        country:
+          type: string
+        logo:
+          type: string
+        website:
+          type: string
+        email:
+          type: string
+        contactPhone:
+          type: string
+        primaryColor:
+          type: string
+        secondaryColor:
+          type: string
+        status:
+          type: string
+        language:
+          type: string
+        parentEntity:
+          type: string
+        category:
+          type: string
+        baseLink:
+          type: string
+        createdBy:
+          type: string
+        virtualBankCode:
+          type: string
+        settlementBankCode:
+          type: string
+        settlementBank:
+          type: string
+        settlementBankAccount:
+          type: string
+        timeZoneNo:
+          type: number
+          format: double
+        timeZone:
+          type: string
+    AuditLogDto:
+      type: object
+      properties:
+        category:
+          type: string
+        logDate:
+          type: string
+        entityCode:
+          type: string
+        auditMessage:
+          type: string
+        logData1:
+          type: string
+        logData2:
+          type: string
+        location:
+          type: string
+        username:
+          type: string
+        id:
+          type: integer
+          format: int64
+    AuditLogListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+        auditLogDtos:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLogDto'
+    BaAccessKeysInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        clientId:
+          type: string
+        sourceCode:
+          type: string
+        secretKey:
+          type: string
+        publicKey:
+          type: string
+        entityCodeAllowed:
+          type: string
+        serviceAllowed:
+          type: string
+        ipAddress:
+          type: string
+        enableIpCheck:
+          type: string
+        apiKey:
+          type: string
+        callBackUrl:
+          type: string
+        notificationUrl:
+          type: string
+        countryCode:
+          type: string
+        parentCode:
+          type: string
+        status:
+          type: string
+        entityCode:
+          type: string
+        bankAccount:
+          type: string
+        bankCode:
+          type: string
+        walletAccNo:
+          type: string
+        baseURL:
+          type: string
